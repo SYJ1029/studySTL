@@ -35,7 +35,7 @@ void save(std::string_view filename)
 
 
 	// 2. 쓰기모드로 저장할 파일을 [덧붙이기 모드로] 열기
-	std::ofstream fileout{ "2025 1학기 stl 월 910목910 강의저장.txt", std::ios::app };
+	std::ofstream fileout{ "2025 1학기 stl 월 910목910 강의저장.txt", std::ios::binary };
 
 	using namespace std::chrono_literals;
 	// 시간을 기록하자
@@ -47,11 +47,11 @@ void save(std::string_view filename)
 	// 때문에 원래 파일을 세이브 해야함
 
 
-	fileout << '\n' << '\n';
-	fileout << "==================================" << '\n';
-	fileout << "저장한 시간: " << std::put_time(lt, "%c %A") << '\n';
-	fileout << "==================================" << '\n';
-	fileout << '\n';
+	//fileout << '\n' << '\n';
+	//fileout << "==================================" << '\n';
+	//fileout << "저장한 시간: " << std::put_time(lt, "%c %A") << '\n';
+	//fileout << "==================================" << '\n';
+	//fileout << '\n';
 	// {}는 uniform initializer 라는 이름 
 	// std::ios::app 가 덧붙이기 모드임을 강조하는 코드
 

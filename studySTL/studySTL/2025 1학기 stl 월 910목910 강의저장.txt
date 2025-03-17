@@ -1,7 +1,7 @@
 
 
 ==========================
-저장한 시간: 03/13/25 10:32:53 Thursday
+저장한 시간: 03/13/25 17:17:19 Thursday
 ==========================
 
 /*--------------------------------
@@ -46,8 +46,7 @@ void save(std::string_view filename)
 	// const qualifier를 사용해 매개변수가 읽기모드 전용임을 강조
 	// --> 꼭 덩치가 큰 string이어야 할까?
 	//  string_view가 왜 없지
-
-
+	// -> Release 모드는 여전히 c++14를 사용하고 있었음
 
 	// 1. 인자로 전달된 filename을 읽기모드로 열기
 	std::ifstream filein { filename.data()}; // RAII -> 자원을 이용해서 실행하기
@@ -96,3 +95,321 @@ void save(std::string_view filename)
 	std::copy(std::istreambuf_iterator{ filein }, {}, std::ostreambuf_iterator{ fileout });
 
 }
+
+
+
+
+
+==================================
+저장한 시간: 2025-03-13 오후 5:38:10 목요일
+==================================
+
+/*--------------------------------
+// 2025학년도 1학기 STL 월910수910 
+// 3월 13일 목요일
+// 2주 1일
+---------------------------------*/
+
+
+/*-------------------------------------------------
+// save 기능을 파일로 분리한다  
+--------------------------------------------------*/
+
+
+#include <iostream>
+#include "save.h"
+
+
+
+//----------
+int main()
+//----------
+{
+	std::cout << "2025년 1학기 STL 2주 1일" << std::endl; // \n이 endl보다 약간 빠를 수는 있음
+
+
+	save("메인.cpp");
+}
+
+
+
+
+
+==================================
+저장한 시간: 2025-03-13 오후 5:39:16 목요일
+==================================
+
+/*--------------------------------
+// 2025학년도 1학기 STL 월910수910 
+// 3월 13일 목요일
+// 2주 1일
+---------------------------------*/
+
+
+/*-------------------------------------------------
+// save 기능을 파일로 분리한다  
+--------------------------------------------------*/
+
+
+#include <iostream>
+#include "save.h"
+
+
+
+//----------
+int main()
+//----------
+{
+	std::cout << "2025년 1학기 STL 2주 1일" << std::endl; // \n이 endl보다 약간 빠를 수는 있음
+
+
+	save("메인.cpp");
+	save("save.h");
+	save("save.cpp");
+}
+
+
+
+
+
+==================================
+저장한 시간: 2025-03-13 오후 5:39:16 목요일
+==================================
+
+//-----------------------------------------------------------------------
+// save.h
+//																2025/3/13
+//-----------------------------------------------------------------------
+#pragma once
+
+
+
+void save(std::string_view);
+
+
+
+==================================
+저장한 시간: 2025-03-13 오후 5:39:16 목요일
+==================================
+
+//-----------------------------------------------------------
+// save.cpp - 한학기를 잘 저장하는 함수
+//													2025.3.13
+//-----------------------------------------------------------
+
+
+#include <string_view>
+#include <fstream>
+#include <iostream>
+#include <filesystem>
+#include <chrono>
+
+//------------------------------------
+void save(std::string_view filename)
+//------------------------------------
+{
+	// const qualifier를 사용해 매개변수가 읽기모드 전용임을 강조
+	// --> 꼭 덩치가 큰 string이어야 할까?
+	//  string_view가 왜 없지
+	// -> Release 모드는 여전히 c++14를 사용하고 있었음
+
+	// 1. 인자로 전달된 filename을 읽기모드로 열기
+	std::ifstream filein{ filename.data() }; // RAII -> 자원을 이용해서 실행하기
+
+	if (not filein) //가독성을 위해 not 으로 
+	{
+		std::cout << filename << "을 열 수 없습니다" << std::endl;
+		exit(202503210); // 굳이 return
+	}
+
+	// 1.5) 저장했다는 사실을 화면에 표시
+	std::cout << filename << "(" << std::filesystem::file_size(filename)
+		<< "bytes) save" << std::endl;
+
+
+
+	// 2. 쓰기모드로 저장할 파일을 [덧붙이기 모드로] 열기
+	std::ofstream fileout{ "2025 1학기 stl 월 910목910 강의저장.txt", std::ios::app };
+
+	using namespace std::chrono_literals;
+	// 시간을 기록하자
+	auto now = std::chrono::system_clock::now();	// epoch로 부터 경과된 tick 수를 얻는다
+	auto utc = std::chrono::system_clock::to_time_t(now); // utc
+	auto lt = std::localtime(&utc); // 지역시간으로 변경
+
+	auto old = fileout.imbue(std::locale("ko_KR")); // 모든 스트림을 한국식으로 바꾸는 '중요한'변화
+	// 때문에 원래 파일을 세이브 해야함
+
+
+	fileout << '\n' << '\n';
+	fileout << "==================================" << '\n';
+	fileout << "저장한 시간: " << std::put_time(lt, "%c %A") << '\n';
+	fileout << "==================================" << '\n';
+	fileout << '\n';
+	// {}는 uniform initializer 라는 이름 
+	// std::ios::app 가 덧붙이기 모드임을 강조하는 코드
+
+	fileout.imbue(old); // 원상복구
+
+	// 3. 사용할 파일을 읽어서 저장할 파일에 덧붙이기
+
+
+	std::vector<char> v(std::filesystem::file_size(filename));
+	// vector는 ()를 사용해 딱 맞는 바이트 확보가 가능하다
+	std::copy(std::istreambuf_iterator{ filein }, {}, std::ostreambuf_iterator{ fileout });
+
+}
+
+==================================
+저장한 시간: 2025-03-13 오후 6:38:32 목요일
+==================================
+
+/*--------------------------------
+// 2025학년도 1학기 STL 월910수910 
+// 3월 13일 목요일
+// 2주 1일
+---------------------------------*/
+
+
+/*-------------------------------------------------
+// Generic Programming 핵심 키워드 - template 
+--------------------------------------------------*/
+
+
+#include <iostream>
+#include <ostream>
+#include "save.h"
+
+//using namespace std;	// 여러분은 이렇게 하지 마세요
+
+// [문제] main 변경 없이 의도대로 실행되게 코딩하라
+// Dog는 클래스로
+
+class Dog {
+public:
+	Dog() = default;
+	Dog(int n) : num{ n } {}
+
+	friend std::ostream& operator<<(std::ostream& os, const Dog& dog){
+		return os << dog.num;
+	}
+private:
+	int num;
+};
+
+void change(int&, int&);
+void change(Dog&, Dog&);
+
+
+
+//----------
+int main()
+//----------
+{
+	{
+		Dog a{ 1 }, b{ 2 }; // 표준 표기법
+		change(a, b); // 뭘 호출하는거임
+		// 1. change(Dog, Dog);
+		// 2. change(Dog&, Dog&);
+		// 3. 컴파일러인 내가 만들 순 없나? -> template!
+		std::cout << a << ", " << b << std::endl;	// [출력] 2, 1
+	}
+
+	{
+		int a{ 1 }, b{ 2 }; // 표준 표기법
+		change(a, b);
+		std::cout << a << ", " << b << std::endl;	// [출력] 2, 1
+	}
+
+	save("메인.cpp");
+}
+
+
+void change(int& num1, int& num2) {
+	int temp{ num1 };
+	num1 = num2;
+	num2 = temp;
+
+}
+
+void change(Dog& a, Dog& b) {
+	Dog temp{ a};
+	a = b;
+	b = temp;
+}
+
+==================================
+저장한 시간: 2025-03-13 오후 6:43:54 목요일
+==================================
+
+/*--------------------------------
+// 2025학년도 1학기 STL 월910수910 
+// 3월 13일 목요일
+// 2주 1일
+---------------------------------*/
+
+
+/*-------------------------------------------------
+// Generic Programming 핵심 키워드 - template 
+--------------------------------------------------*/
+
+
+#include <iostream>
+#include <ostream>
+#include "save.h"
+
+//using namespace std;	// 여러분은 이렇게 하지 마세요
+
+// [문제] main 변경 없이 의도대로 실행되게 코딩하라
+// Dog는 클래스로
+
+class Dog {
+public:
+	Dog() = default;
+	Dog(int n) : num{ n } {}
+
+	friend std::ostream& operator<<(std::ostream& os, const Dog& dog){
+		return os << dog.num;
+	}
+private:
+	int num;
+};
+
+
+// [질문] 도대체 몇 개의 change를 만들면 되겠니?
+// -> c++ 언어의 자료형 개수는 몇개? -> 무한대
+// -> 코드 생성을 자동화하자
+
+template <class T>
+void change(T&, T&);
+
+template <class T>
+void change(T& num1, T& num2) {
+	T temp{ num1 };
+	num1 = num2;
+	num2 = temp;
+
+}
+
+//----------
+int main()
+//----------
+{
+	{
+		Dog a{ 1 }, b{ 2 }; // 표준 표기법
+		change(a, b); // 뭘 호출하는거임
+		// 1. change(Dog, Dog);
+		// 2. change(Dog&, Dog&);
+		// 3. 컴파일러인 내가 만들 순 없나? -> template!
+		std::cout << a << ", " << b << std::endl;	// [출력] 2, 1
+	}
+
+	{
+		int a{ 1 }, b{ 2 }; // 표준 표기법
+		change(a, b);
+		std::cout << a << ", " << b << std::endl;	// [출력] 2, 1
+	}
+
+	save("메인.cpp");
+}
+

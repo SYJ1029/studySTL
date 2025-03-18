@@ -20,7 +20,7 @@ void save(std::string_view filename)
 	// -> Release 모드는 여전히 c++14를 사용하고 있었음
 
 	// 1. 인자로 전달된 filename을 읽기모드로 열기
-	std::ifstream filein{ filename.data() }; // RAII -> 자원을 이용해서 실행하기
+	std::ifstream filein{ filename.data(), std::ios::binary }; // RAII -> 자원을 이용해서 실행하기
 
 	if (not filein) //가독성을 위해 not 으로 
 	{
@@ -35,7 +35,7 @@ void save(std::string_view filename)
 
 
 	// 2. 쓰기모드로 저장할 파일을 [덧붙이기 모드로] 열기
-	std::ofstream fileout{ "2025 1학기 stl 월 910목910 강의저장.txt", std::ios::binary };
+	std::ofstream fileout{ "2025 1학기 stl 월 910목910 강의저장.txt", std::ios::app };
 
 	using namespace std::chrono_literals;
 	// 시간을 기록하자

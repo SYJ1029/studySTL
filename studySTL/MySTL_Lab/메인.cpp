@@ -50,6 +50,18 @@ void change(T& num1, T& num2) {
 // 절차에 따라(알고리즘) 같은 기능을 보장하는 것  
 // Generic Programming
 
+
+std::tuple<std::string, int> example_List(int id) 
+{
+	switch (id) {
+	case 0: return { "송영준", 2021184018 };
+	case 1: return { "영준송", 4018202118 };
+	case 2: return { "SongYoungJun", 888484 };
+	}
+
+	throw std::invalid_argument("id");
+}
+
 //----------
 int main()
 //----------
@@ -69,6 +81,16 @@ int main()
 		std::cout << a << ", " << b << std::endl;	// [출력] 2, 1
 	}
 
-	save("메인.cpp");
+	auto idiot0 = example_List(0);
+
+	std::cout << std::get<std::string>(idiot0) << std::endl;
+	std::cout << std::get<1>(idiot0) << std::endl;
+
+	auto idiot2 = example_List(2);
+
+	std::cout << std::get<std::string>(idiot2) << std::endl;
+	std::cout << std::get<1>(idiot2) << std::endl;
+
+	//save("메인.cpp");
 }
 

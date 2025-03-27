@@ -1,96 +1,92 @@
 /*--------------------------------
-// 2025학년도 1학기 STL 월910수910 
-// 3월 13일 목요일
-// 2주 1일
+// 2025학년도 1학기 STL 월910수910
+// 3월 17일 월요일
+// 3주 2일
 ---------------------------------*/
 
 
 /*-------------------------------------------------
-// Generic Programming 핵심 키워드 - template 
+// 많은 수의 자료를 다루기 - Dog를 읽고 쓸 수 있어야
 --------------------------------------------------*/
 
 
 #include <iostream>
+#include <string>
+#include <array>
+#include <fstream>
+#include <random>
 #include "save.h"
 
-//using namespace std;	// 여러분은 이렇게 하지 마세요
 
-// [문제] main 변경 없이 의도대로 실행되게 코딩하라
-// Dog는 클래스로
 
-// 컴파일러의 동작
+//[실습2] name에 더 많은 글자가 들어갈 수 있도록 해보자, 16자를 넘길 수 있을까?
+
+
+std::default_random_engine dre{ std::random_device{}() };
+std::uniform_int_distribution<int> uid('a', 'z');
 
 class Dog {
-public:
-	Dog() = default;
-	Dog(int n) : num{ n } {}
-
-	friend std::ostream& operator<<(std::ostream& os, const Dog& dog){
-		return os << dog.num;
-	}
 private:
-	int num;
+	std::string name;
+	int id;
+	static int sid;
+	friend std::ostream& operator<<(std::ostream& os, const Dog& dog) {
+		return os << "id - " << dog.id << std::endl << "name - " << dog.name << std::endl;
+	}
+
+	friend std::istream& operator>>(std::istream& is, Dog& dog) {
+
+		return is.read((char*)&dog, sizeof(dog));
+	}
+public:
+	Dog() : id{ ++sid } {
+		for (int i = 0; i < 64; ++i)
+			name += uid(dre);
+	}
+
+	void show() {
+		std::cout << "id - " << id << std::endl;
+		std::cout << "name - " << name << std::endl;
+	}
+
 };
 
+int Dog::sid{};
 
-// [질문] 도대체 몇 개의 change를 만들면 되겠니?
-// -> c++ 언어의 자료형 개수는 몇개? -> 무한대
-// -> 코드 생성을 자동화하자
-
-
-// 템플릿은 선언과 정의를 동시에 해야만 한다
-template <class T>
-void change(T& num1, T& num2) {
-	T temp{ num1 };
-	num1 = num2;
-	num2 = temp;
-
-}
-// 자료형에 관계 없이 그게 무엇이든지 간에 
-// 절차에 따라(알고리즘) 같은 기능을 보장하는 것  
-// Generic Programming
+std::array<Dog, 10'0000> dogs;
+std::array<Dog, 10'0000> dogs2;
 
 
-std::tuple<std::string, int> example_List(int id) 
-{
-	switch (id) {
-	case 0: return { "송영준", 2021184018 };
-	case 1: return { "영준송", 4018202118 };
-	case 2: return { "SongYoungJun", 888484 };
-	}
+void Dog_Save(std::string filename) {
 
-	throw std::invalid_argument("id");
+	std::ofstream out(filename, std::ios::binary);
+
+	out.write((char*)dogs.data(), sizeof(Dog) * dogs.size());
 }
 
-//----------
+void Load(std::string filename) {
+
+	std::ifstream in(filename, std::ios::binary);
+	if (not in)
+		exit(888484);
+
+	in.read((char*)dogs2.data(), dogs2.size());
+
+}
+
+//----------------
 int main()
-//----------
+//----------------
 {
-	{
-		Dog a{ 1 }, b{ 2 }; // 표준 표기법
-		change(a, b); // 뭘 호출하는거임
-		// 1. change(Dog, Dog);
-		// 2. change(Dog&, Dog&);
-		// 3. 컴파일러인 내가 만들 순 없나? -> template!
-		std::cout << a << ", " << b << std::endl;	// [출력] 2, 1
+
+	//Dog_Save("진짜 랜덤 Dog 10만개");
+
+
+	Load("진짜 랜덤 Dog 10만개");
+
+	for (const Dog& dog : dogs2) {
+		std::cout << dog << std::endl;
 	}
-
-	{
-		int a{ 1 }, b{ 2 }; // 표준 표기법
-		change(a, b);
-		std::cout << a << ", " << b << std::endl;	// [출력] 2, 1
-	}
-
-	auto idiot0 = example_List(0);
-
-	std::cout << std::get<std::string>(idiot0) << std::endl;
-	std::cout << std::get<1>(idiot0) << std::endl;
-
-	auto idiot2 = example_List(2);
-
-	std::cout << std::get<std::string>(idiot2) << std::endl;
-	std::cout << std::get<1>(idiot2) << std::endl;
-
+	// 출력해서 검증
 	//save("메인.cpp");
 }
-

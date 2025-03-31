@@ -64,22 +64,23 @@ int main()
 	int(*정렬기준)(const void*, const void*) = 오름차순q;
 
 
-	////스톱워치 시작
-	//auto b = std::chrono::high_resolution_clock::now();
-	//std::qsort(arr.data(), arr.size(), sizeof(int), 정렬기준);
-	//auto e = std::chrono::high_resolution_clock::now();
-	//// 스톱워치 끝
-
-	//std::cout << "qsort 정렬에 걸린 시간" << e - b << std::endl << std::endl;	// 경과시간
-
-
-	//2차 스톱워치 시작
+	//스톱워치 시작
 	auto b = std::chrono::high_resolution_clock::now();
 	std::sort(arr.begin(), arr.end(), 내림차순);		// 더 간단해졌다 -> 디폴트가 오름차순이다
 	auto e = std::chrono::high_resolution_clock::now();
-	//2차 스톱워치 종료
+
+	// 스톱워치 끝
 
 	std::cout << "sort 정렬에 걸린 시간" << e - b << std::endl << std::endl;	// 경과시간
+
+
+	//2차 스톱워치 시작
+	b = std::chrono::high_resolution_clock::now();
+	std::qsort(arr.data(), arr.size(), sizeof(int), 정렬기준);
+	e = std::chrono::high_resolution_clock::now();
+	//2차 스톱워치 종료
+
+	std::cout << "qsort 정렬에 걸린 시간" << e - b << std::endl << std::endl;	// 경과시간
 
 
 	int num = 0;

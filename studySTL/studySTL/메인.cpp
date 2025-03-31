@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <random>
 #include <print>
+#include <ranges>
 #include "save.h"
 
 //[문제] 값의 범위가 [0, 1'000'0000)인 랜덤 int값 1000만개를 저장할 
@@ -40,7 +41,7 @@ int main()
 	//std::qsort((void*)arr.data(), arr.size(), sizeof(int), {});
 
 	int num = 0;
-	for (const int num : arr)
+	for (int num : arr | std::views::take(1000))
 		std::print("{:8}", arr[num]);
-	save("메인.cpp");
+	//save("메인.cpp");
 }

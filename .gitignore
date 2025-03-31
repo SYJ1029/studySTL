@@ -480,3 +480,12 @@ FodyWeavers.xsd
 
 # not upload txt files!
 *.txt
+
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# Unignore all dirs
+!*/

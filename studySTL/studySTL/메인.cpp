@@ -37,12 +37,20 @@ bool 내림차순(int a, int b)
 	return a > b; // greater 연산자일 경우 내림차순
 }
 
+bool 오름차순(int a, int b)
+{
+	return a < b;	// less 연산자일 경우 오름차순
+}
 
-
-int 내림차순c(const void* a, const void* b)
+int 오름차순q(const void* a, const void* b)
 {
 
-	return *(int*)b - *(int*)a;
+	return *(int*)a - *(int*)b;
+}
+
+int 내림차순q(const void* a, const void* b)
+{
+	return *(int*)a - *(int*)b;
 }
 
 //----------------
@@ -53,17 +61,26 @@ int main()
 		num = uid(dre);
 	// stl의 sort로 내림차순 정렬
 
-	int(*정렬기준)(const void*, const void*) = 내림차순c;
+	int(*정렬기준)(const void*, const void*) = 오름차순q;
 
 
 	//스톱워치 시작
 	auto b = std::chrono::high_resolution_clock::now();
-	//std::sort(arr.begin(), arr.end(), 내림차순);		// 더 간단해졌다 -> 디폴트가 오름차순이다
 	std::qsort(arr.data(), arr.size(), sizeof(int), 정렬기준);
 	auto e = std::chrono::high_resolution_clock::now();
 	// 스톱워치 끝
+
+	std::cout << "qsort 정렬에 걸린 시간" << e - b << std::endl << std::endl;	// 경과시간
+
+
+	//2차 스톱워치 시작
+	b = std::chrono::high_resolution_clock::now();
+	std::sort(arr.begin(), arr.end(), 내림차순);		// 더 간단해졌다 -> 디폴트가 오름차순이다
+	e = std::chrono::high_resolution_clock::now();
+	//2차 스톱워치 종료
+
+	std::cout << "sort 정렬에 걸린 시간" << e - b << std::endl << std::endl;	// 경과시간
 	
-	std::cout << "정렬에 걸린 시간" << e - b << std::endl << std::endl;	// 경과시간
 
 	int num = 0;
 	for (int num : arr | std::views::take(1000))		// 확률적으로 uniform 하다(범위에 대해 골고루 퍼진 값)

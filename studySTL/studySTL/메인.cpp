@@ -41,7 +41,7 @@ int main()
 	//std::qsort((void*)arr.data(), arr.size(), sizeof(int), {});
 
 	int num = 0;
-	for (int num : arr | std::views::take(1000))
+	for (int num : arr | std::views::take(1000) | std::views::take(10))
 		std::print("{:8}", arr[num]);
 	//save("¸ŞÀÎ.cpp");
 }

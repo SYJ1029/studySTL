@@ -6,35 +6,53 @@
 
 
 /*-------------------------------------------------
-// RAII와 smart pointer
+// Callable
 --------------------------------------------------*/
 
 
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <filesystem>
+#include <memory>
 #include "save.h"
 
+//[문제] "메인.cpp" 파일의 소문자를 대문자로 변환하여 "메인 대문자.cpp"에 저장하라
 
-void f()
-{
-	int* p = new int[10];
-
+void Load(const std::string filename, std::string& str) {
+	std::ifstream in(filename.data());
 	
-	throw 1557888484;
+	if (not in) {
+		std::cout << "can't open" << std::endl;
+	}
 
-	std::cout << "절대 new int로 확보한 자원이 반환 될 수 없다" << std::endl;
-	delete[] p;
+	//std::cout << line << std::endl;
+
+
+
+	str.resize(std::filesystem::file_size(filename));
+	in.read((char*)str.data(), std::filesystem::file_size(filename));
+	
+
+
 }
+
+void SaveUpperCase(std::string str) {
+	std::ofstream out("메인 대문자.cpp");
+	std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) {return std::toupper(c); });
+	std::copy(str.begin(), str.end(), std::ostreambuf_iterator{ out });	// copy를 할 때 str.end()를 붙여야 했던 이유는 무엇일까?
+}
+
 
 //----------------
 int main()
 //----------------
 {
-	try{
-		f();
-	}
-	catch (...) {		// ...의 이름은 ellipsis!!!
+	std::string str;
 
-	}// catch를 함으로서 예외를 catch하는 데에는 성공했지만 delete는 절대로 될 수 없다.
-
-	save("메인.cpp");
+	Load("메인.cpp", str);
+	SaveUpperCase(str);
+	
+	//save("메인.cpp");
 }

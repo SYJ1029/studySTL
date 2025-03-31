@@ -29,12 +29,10 @@ int main()
 
 	std::ofstream out{ "메인 대문자.cpp" };
 
-	char c;
-	in >> std::noskipws;
-	while (in >> c) {
-		c = std::toupper(c);
-		out << c;
-	}
+	// transform은 타입에 무관한 제네릭 함수!
+	std::transform(std::istreambuf_iterator<char>{in}, {}, 
+		std::ostreambuf_iterator<char>{out}, 
+		여기에 얼마나 들어갈 수 있을까);	// 여기도 제네릭
 	
 	//save("메인.cpp");
 }

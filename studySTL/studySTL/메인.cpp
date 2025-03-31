@@ -38,6 +38,13 @@ bool 내림차순(int a, int b)
 }
 
 
+
+int 내림차순c(const void* a, const void* b)
+{
+
+	return *(int*)b - *(int*)a;
+}
+
 //----------------
 int main()
 //----------------
@@ -46,14 +53,17 @@ int main()
 		num = uid(dre);
 	// stl의 sort로 내림차순 정렬
 
+	int(*정렬기준)(const void*, const void*) = 내림차순c;
+
 
 	//스톱워치 시작
 	auto b = std::chrono::high_resolution_clock::now();
-	std::sort(arr.begin(), arr.end(), 내림차순);		// 더 간단해졌다 -> 디폴트가 오름차순이다
+	//std::sort(arr.begin(), arr.end(), 내림차순);		// 더 간단해졌다 -> 디폴트가 오름차순이다
+	std::qsort(arr.data(), arr.size(), sizeof(int), 정렬기준);
 	auto e = std::chrono::high_resolution_clock::now();
 	// 스톱워치 끝
 	
-	std::cout << "정렬에 걸린 시간" << e - b << std::endl;	// 경과시간
+	std::cout << "정렬에 걸린 시간" << e - b << std::endl << std::endl;	// 경과시간
 
 	int num = 0;
 	for (int num : arr | std::views::take(1000))		// 확률적으로 uniform 하다(범위에 대해 골고루 퍼진 값)

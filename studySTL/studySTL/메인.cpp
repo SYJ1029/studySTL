@@ -28,10 +28,6 @@ void Load(const std::string filename, std::string& str) {
 		std::cout << "can't open" << std::endl;
 	}
 
-	//std::cout << line << std::endl;
-
-
-
 	str.resize(std::filesystem::file_size(filename));
 	in.read((char*)str.data(), std::filesystem::file_size(filename));
 	
@@ -63,10 +59,9 @@ int main()
 	std::ofstream out{ "메인 대문자.cpp" };
 
 	char c;
+	in >> std::noskipws;
 	while (in >> c) {
-		if (std::islower(c))
-			c = std::toupper(c);
-
+		c = std::toupper(c);
 		out << c;
 	}
 	

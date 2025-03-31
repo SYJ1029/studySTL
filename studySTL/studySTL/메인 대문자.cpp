@@ -1,1 +1,69 @@
-/*--------------------------------//2025학년도1학기STL월910수910//3월17일월요일//4주1일---------------------------------*//*-------------------------------------------------//CALLABETYPES-호출가능한타입//1.함수--------------------------------------------------*/#INCLUDE<IOSTREAM>#INCLUDE<FSTREAM>#INCLUDE<STRING>#INCLUDE<ALGORITHM>#INCLUDE<FILESYSTEM>#INCLUDE<MEMORY>#INCLUDE"SAVE.H"//[문제]"메인.CPP"파일의소문자를대문자로변환하여"메인대문자.CPP"에저장하라VOIDLOAD(CONSTSTD::STRINGFILENAME,STD::STRING&STR){STD::IFSTREAMIN(FILENAME.DATA());IF(NOTIN){STD::COUT<<"CAN'TOPEN"<<STD::ENDL;}//STD::COUT<<LINE<<STD::ENDL;STR.RESIZE(STD::FILESYSTEM::FILE_SIZE(FILENAME));IN.READ((CHAR*)STR.DATA(),STD::FILESYSTEM::FILE_SIZE(FILENAME));}VOIDSAVEUPPERCASE(STD::STRINGSTR){STD::OFSTREAMOUT("메인대문자.CPP");STD::TRANSFORM(STR.BEGIN(),STR.END(),STR.BEGIN(),[](UNSIGNEDCHARC){RETURNSTD::TOUPPER(C);});STD::COPY(STR.BEGIN(),STR.END(),STD::OSTREAMBUF_ITERATOR{OUT});//COPY를할때STR.END()를붙여야했던이유는무엇일까?}//----------------INTMAIN()//----------------{{STD::STRINGSTR;LOAD("메인.CPP",STR);SAVEUPPERCASE(STR);}STD::IFSTREAMIN{"메인.CPP"};IF(NOTIN)RETURN15578884;STD::OFSTREAMOUT{"메인대문자.CPP"};CHARC;WHILE(IN>>C){IF(STD::ISLOWER(C))C=STD::TOUPPER(C);OUT<<C;}//SAVE("메인.CPP");}
+/*--------------------------------
+// 2025학년도 1학기 STL 월910수910 
+// 3월 17일 월요일
+// 4주 1일
+---------------------------------*/
+
+
+/*-------------------------------------------------
+// CALLABE TYPES - 호출가능한 타입
+// 1. 함수
+--------------------------------------------------*/
+
+
+#INCLUDE <IOSTREAM>
+#INCLUDE <FSTREAM>
+#INCLUDE <STRING>
+#INCLUDE <ALGORITHM>
+#INCLUDE <FILESYSTEM>
+#INCLUDE <MEMORY>
+#INCLUDE "SAVE.H"
+
+//[문제] "메인.CPP" 파일의 소문자를 대문자로 변환하여 "메인 대문자.CPP"에 저장하라
+
+VOID LOAD(CONST STD::STRING FILENAME, STD::STRING& STR) {
+	STD::IFSTREAM IN(FILENAME.DATA());
+	
+	IF (NOT IN) {
+		STD::COUT << "CAN'T OPEN" << STD::ENDL;
+	}
+
+	STR.RESIZE(STD::FILESYSTEM::FILE_SIZE(FILENAME));
+	IN.READ((CHAR*)STR.DATA(), STD::FILESYSTEM::FILE_SIZE(FILENAME));
+	
+
+
+}
+
+VOID SAVEUPPERCASE(STD::STRING STR) {
+	STD::OFSTREAM OUT("메인 대문자.CPP");
+	STD::TRANSFORM(STR.BEGIN(), STR.END(), STR.BEGIN(), [](UNSIGNED CHAR C) {RETURN STD::TOUPPER(C); });
+	STD::COPY(STR.BEGIN(), STR.END(), STD::OSTREAMBUF_ITERATOR{ OUT });	// COPY를 할 때 STR.END()를 붙여야 했던 이유는 무엇일까?
+}
+
+
+//----------------
+INT MAIN()
+//----------------
+{
+	{
+		STD::STRING STR;
+		LOAD("메인.CPP", STR);
+		SAVEUPPERCASE(STR);
+	}
+
+	STD::IFSTREAM IN{ "메인.CPP" };
+	IF (NOT IN)
+		RETURN 15578884;
+
+	STD::OFSTREAM OUT{ "메인 대문자.CPP" };
+
+	CHAR C;
+	IN >> STD::NOSKIPWS;
+	WHILE (IN >> C) {
+		C = STD::TOUPPER(C);
+		OUT << C;
+	}
+	
+	//SAVE("메인.CPP");
+}

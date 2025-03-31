@@ -12,29 +12,35 @@
 
 
 #include <iostream>
-#include <fstream>
+#include <array>
 #include <algorithm>
+#include <random>
+#include <print>
 #include "save.h"
 
-//[문제] "메인.cpp" 파일의 소문자를 대문자로 변환하여 "메인 대문자.cpp"에 저장하라
+//[문제] 값의 범위가 [0, 1'000'0000)인 랜덤 int값 1000만개를 저장할 
+// 메모리를 확보하고 값을 채워라
+// (시작) qsort로 오름차순 정렬하라
+// 정렬한 결과 중에서 앞에서 부터 1000개만 화면에 출력해라
 
+
+std::default_random_engine dre;
+std::uniform_int_distribution uid{ 0, 999'9999 };
+
+std::array<int, 1'000'0000> arr;
 
 //----------------
 int main()
 //----------------
 {
-	std::ifstream in{ "메인.cpp" };
-	if (not in)
-		return 15578884;
+	for (int& num : arr)
+		num = uid(dre);
+	// qsort로 정렬
 
-	std::ofstream out{ "메인 대문자.cpp" };
+	//std::qsort((void*)arr.data(), arr.size(), sizeof(int), {});
 
-	// transform은 타입에 무관한 제네릭 함수!
-	std::transform(std::istreambuf_iterator<char>{in}, {}, 
-		std::ostreambuf_iterator<char>{out}, 
-		[](char c) { 
-			return std::toupper(c); 
-		});	// 여기도 제네릭
-	
+	int num = 0;
+	for (const int num : arr)
+		std::print("{:8}", arr[num]);
 	save("메인.cpp");
 }

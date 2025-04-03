@@ -30,6 +30,7 @@ std::default_random_engine dre;
 std::uniform_int_distribution uid{ 0, 999'9999 };
 
 std::array<int, 1'000'0000> arr;
+std::array<int, 1'000'0000> arrq;
 
 
 bool 내림차순(int a, int b)
@@ -59,6 +60,8 @@ int main()
 {
 	for (int& num : arr)
 		num = uid(dre);
+	for (int& numq : arrq)
+		numq = uid(dre);
 	// stl의 sort로 내림차순 정렬
 
 	int(*정렬기준)(const void*, const void*) = 오름차순q;
@@ -76,7 +79,7 @@ int main()
 
 	//2차 스톱워치 시작
 	b = std::chrono::high_resolution_clock::now();
-	std::qsort(arr.data(), arr.size(), sizeof(int), 정렬기준);
+	std::qsort(arrq.data(), arrq.size(), sizeof(int), 정렬기준);
 	e = std::chrono::high_resolution_clock::now();
 	//2차 스톱워치 종료
 

@@ -69,7 +69,7 @@ int main()
 
 	//스톱워치 시작
 	auto b = std::chrono::high_resolution_clock::now();
-	std::sort(arr.begin(), arr.end(), 내림차순);		// 더 간단해졌다 -> 디폴트가 오름차순이다
+	std::sort(arrq.begin(), arrq.end(), 내림차순);		// 더 간단해졌다 -> 디폴트가 오름차순이다
 	auto e = std::chrono::high_resolution_clock::now();
 
 	// 스톱워치 끝
@@ -78,12 +78,12 @@ int main()
 
 
 	//2차 스톱워치 시작
-	b = std::chrono::high_resolution_clock::now();
-	std::qsort(arrq.data(), arrq.size(), sizeof(int), 정렬기준);
-	e = std::chrono::high_resolution_clock::now();
+	auto b2 = std::chrono::high_resolution_clock::now();
+	std::qsort(arr.data(), arr.size(), sizeof(int), 정렬기준);
+	auto e2 = std::chrono::high_resolution_clock::now();
 	//2차 스톱워치 종료
 
-	std::cout << "qsort 정렬에 걸린 시간" << e - b << std::endl << std::endl;	// 경과시간
+	std::cout << "qsort 정렬에 걸린 시간" << e2 - b2 << std::endl << std::endl;	// 경과시간
 
 
 	int num = 0;

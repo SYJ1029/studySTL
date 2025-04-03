@@ -7,33 +7,41 @@
 
 
 /*-------------------------------------------------
-// Callabe types - 호출가능한 타입
-// 1. 함수
-// 2. 함수포인터
-// 3. 람다 - 이름 없는 함수인데, VS에서는 함수객체를 이용하여 람다를 구현함
-// 4. 함수객체(function object) - 함수호출연산자를 오버로딩한 클래스의 객체
-// 5. 멤버함수
+// Callabe types - 호출가능한 타입 ==> 모든 호출가능타입을 대표하는 function
 --------------------------------------------------*/
 
-
 #include <iostream>
+#include <fstream>
 #include "save.h"
 
+
+// [상황] e-class에서 다운받은 파일 "Dog 십만마리"에는 
+// 정확하게 Dog 객체 10'0000마리가 저장되어 있다
+// 파일은
+//			ofstream out("Dog 10만마리");
+// Dog 타입의 객체 dog는
+//			out << dog;
+// 코드로 저장하였다
+
 class Dog {
-public:
-	void opertator() ( int n) const {
-		std::cout << "왜 불렀니" << std::endl;
+private:
+	size_t num;					// 랜덤 int 값
+	std::string name;			// [3, 60) 까지의 랜덤 소문자로만 구성
+
+	friend std::ostream& operator<<(std::ostream& os, const Dog& dog) {
+		return os << dog.num << " " << dog.name << " ";
 	}
 };
+
+// [문제] 파일에 저장된 10만마리의 Dog객체를 모두 읽어 메모리에 저장하라
+// 마지막 객체의 정보를 화면에 출력하고 출력된 내용을 답지에도 적어라
+// 메모리에 있는 Dog객체를 name 길이 기준 오름차순으로 정렬하라
+// 정렬한 마지막 객체의 정보를 화면에 출력하고 답지에도 적어라
 
 //----------------
 int main()
 //----------------
 {
-
-	Dog dog;
-
-	dog( 1 );		// ()는 function-call operator로, 이것도 오버로딩이 가능하다
 
 	save("메인.cpp");
 }

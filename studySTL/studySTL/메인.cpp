@@ -1,90 +1,39 @@
 /*--------------------------------
-// 2025학년도 1학기 STL 월910수910 
+// 2025학년도 1학기 STL 월910수910				(5주 1일)
 // 3월 17일 월요일
-// 5주 1일
+// 중간고사		- 8주 1일(4월 24일 목요일)
+// 과제설명(30)	- 6주 1일(4월 10일 목요일)
 ---------------------------------*/
 
 
 /*-------------------------------------------------
 // Callabe types - 호출가능한 타입
 // 1. 함수
+// 2. 함수포인터
+// 3. 람다 - 이름 없는 함수인데, VS에서는 함수객체를 이용하여 람다를 구현함
+// 4. 함수객체(function object) - 함수호출연산자를 오버로딩한 클래스의 객체
+// 5. 멤버함수
 --------------------------------------------------*/
 
 
 #include <iostream>
-#include <array>
-#include <random>
-#include <print>
-#include <ranges>
-#include <algorithm>
-#include <chrono>
 #include "save.h"
 
-//[문제] 값의 범위가 [0, 1'000'0000)인 랜덤 int값 1000만개를 저장할 
-// 메모리를 확보하고 값을 채워라
-// (시작) qsort로 오름차순 정렬하라
-// 정렬한 결과 중에서 앞에서 부터 1000개만 화면에 출력해라
-
-
-std::default_random_engine dre;
-std::uniform_int_distribution uid{ 0, 999'9999 };
-
-std::array<int, 1'000'0000> arr;
-
-
-bool 내림차순(int a, int b)
-{
-	return a > b; // greater 연산자일 경우 내림차순
-}
-
-bool 오름차순(int a, int b)
-{
-	return a < b;	// less 연산자일 경우 오름차순
-}
-
-int 오름차순q(const void* a, const void* b)
-{
-
-	return *(int*)a - *(int*)b;
-}
-
-int 내림차순q(const void* a, const void* b)
-{
-	return *(int*)a - *(int*)b;
-}
+class Dog {
+public:
+	void opertator() ( int n) const {
+		std::cout << "왜 불렀니" << std::endl;
+	}
+};
 
 //----------------
 int main()
 //----------------
 {
-	for (int& num : arr)
-		num = uid(dre);
-	// stl의 sort로 내림차순 정렬
 
-	int(*정렬기준)(const void*, const void*) = 오름차순q;
+	Dog dog;
 
+	dog( 1 );		// ()는 function-call operator로, 이것도 오버로딩이 가능하다
 
-	//스톱워치 시작
-	auto b = std::chrono::high_resolution_clock::now();
-	std::qsort(arr.data(), arr.size(), sizeof(int), 정렬기준);
-	auto e = std::chrono::high_resolution_clock::now();
-	// 스톱워치 끝
-
-	std::cout << "qsort 정렬에 걸린 시간" << e - b << std::endl << std::endl;	// 경과시간
-
-
-	//2차 스톱워치 시작
-	b = std::chrono::high_resolution_clock::now();
-	std::sort(arr.begin(), arr.end(), 내림차순);		// 더 간단해졌다 -> 디폴트가 오름차순이다
-	e = std::chrono::high_resolution_clock::now();
-	//2차 스톱워치 종료
-
-	std::cout << "sort 정렬에 걸린 시간" << e - b << std::endl << std::endl;	// 경과시간
-	
-
-	int num = 0;
-	for (int num : arr | std::views::take(1000))		// 확률적으로 uniform 하다(범위에 대해 골고루 퍼진 값)
-		std::print("{:8}", arr[num]);
-	std::cout << std::endl;
-	//save("메인.cpp");
+	save("메인.cpp");
 }

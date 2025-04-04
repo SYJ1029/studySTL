@@ -15,6 +15,7 @@
 #include <string>
 #include <array>
 #include <ranges>
+#include <algorithm>
 #include "save.h"
 
 
@@ -38,6 +39,11 @@ private:
 	friend std::istream& operator>>(std::istream& is, Dog& dog) {
 		return is >> dog.num >> dog.name;
 	}
+
+	friend bool operator<(const Dog& dog1, const Dog& dog2) {
+		return dog1.name.size() < dog2.name.size();
+	}
+
 };
 
 // [문제] 파일에 저장된 10만마리의 Dog객체를 모두 읽어 메모리에 저장하라
@@ -64,8 +70,12 @@ int main()
 	for (Dog& dog : arr) {
 		in >> dog;
 	}
-	
 
+	std::cout << arr.back() << std::endl;
+
+	std::sort(arr.begin(), arr.end(), [](Dog dog1, Dog dog2) {
+		return dog1 < dog2;
+		});
 
 	std::cout << arr.back() << std::endl;
 

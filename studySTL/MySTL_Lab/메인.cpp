@@ -82,5 +82,10 @@ int main()
 
 	std::cout << arr.back() << std::endl;
 
+	{
+		using namespace std;
+		cout << f.target_type().name() << endl;
+	}
+
 	//save("¸ŞÀÎ.cpp");
 }

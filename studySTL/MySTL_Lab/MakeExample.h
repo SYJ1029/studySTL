@@ -1,4 +1,4 @@
 #pragma once
 
 
-void MakeQuestion(std::string);
+void MakeQuestion(std::string, size_t);

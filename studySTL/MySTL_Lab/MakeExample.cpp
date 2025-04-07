@@ -34,12 +34,12 @@ public:
 
 
 
-void MakeQuestion(std::string filename) {
+void MakeQuestion(std::string filename, size_t filenum) {
 	std::ofstream out(filename.data());
 
 
-	for (int i = 0; i < 10'0000; ++i) {
+	for (int i = 0; i < filenum; ++i) {
 		Homework questionMaker;
-		out << questionMaker << std::endl;
+		out << questionMaker;
 	}
 }

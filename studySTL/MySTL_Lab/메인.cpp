@@ -58,17 +58,17 @@ private:
 // 메모리에 있는 Dog객체를 name 길이 기준 오름차순으로 정렬하라
 // 정렬한 마지막 객체의 정보를 화면에 출력하고 답지에도 적어라
 
-std::array<Dog, 10'0000> arr;
-std::array<Dog, 10'0000> arr2;
+std::array<Dog, 100'0000> arr;
+std::array<Dog, 100'0000> arr2;
 
 //----------------
 int main()
 //----------------
 {
-	MakeQuestion("Dog 십만마리");
+	MakeQuestion("Dog 백만마리", 100'0000);
 
 
-	std::ifstream in("Dog 십만마리");
+	std::ifstream in("Dog 백만마리");
 
 	if (not in) {
 		std::cout << "can't open :(" << std::endl;
@@ -86,31 +86,31 @@ int main()
 		in >> dog;
 	}
 
-	std::function<bool(const Dog, const Dog)> f{ 
+	std::function<bool(const Dog&, const Dog&)> f{ 
 		[](const Dog dog1, const Dog dog2) {
 		return dog1 < dog2;
 		} 
 	};
 
-	auto lamda{ 
-		[](const Dog dog1, const Dog dog2) {
-		return dog1 > dog2;
+	auto lambda{ 
+		[](const Dog& dog1, const Dog& dog2) {
+		return dog1 < dog2;
 		} 
 	};
 
 	std::cout << arr.back() << std::endl;
 
 	auto b = std::chrono::high_resolution_clock().now();
-	std::sort(arr.begin(), arr.end(), f);
+	std::sort(arr.begin(), arr.end(), lambda);
 	auto e = std::chrono::high_resolution_clock().now();
 
-	std::cout << "fuction 소요 시간 - " << e - b << std::endl;
+	std::cout << "lambda 소요 시간 - " << e - b << std::endl;
 
 	b = std::chrono::high_resolution_clock().now();
-	std::sort(arr2.begin(), arr2.end(), lamda);
+	std::sort(arr2.begin(), arr2.end(), f);
 	e = std::chrono::high_resolution_clock().now();
 
-	std::cout << "lambda 소요 시간 - " << e - b << std::endl;
+	std::cout << "function 소요 시간 - " << e - b << std::endl;
 
 	{
 		using namespace std;

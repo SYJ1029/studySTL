@@ -73,7 +73,7 @@ int main()
 
 	std::cout << arr.back() << std::endl;
 
-	std::sort(arr.begin(), arr.end(), [](Dog dog1, Dog dog2) {
+	std::sort(arr.begin(), arr.end(), [](Dog& dog1, Dog& dog2) {
 		return dog1 < dog2;
 		});
 

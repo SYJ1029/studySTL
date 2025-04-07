@@ -38,7 +38,7 @@ void MakeQuestion(std::string filename) {
 	std::ofstream out(filename.data());
 
 
-	for (int i = 0; i < 1'000'0000; ++i) {
+	for (int i = 0; i < 10'0000; ++i) {
 		Homework questionMaker;
 		out << questionMaker << std::endl;
 	}

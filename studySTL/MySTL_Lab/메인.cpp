@@ -17,6 +17,7 @@
 #include <ranges>
 #include <algorithm>
 #include <functional>
+#include <chrono>
 #include "save.h"
 #include "MakeExample.h"
 
@@ -58,12 +59,14 @@ private:
 // 정렬한 마지막 객체의 정보를 화면에 출력하고 답지에도 적어라
 
 std::array<Dog, 10'0000> arr;
-
+std::array<Dog, 10'0000> arr2;
 
 //----------------
 int main()
 //----------------
 {
+	MakeQuestion("Dog 십만마리");
+
 
 	std::ifstream in("Dog 십만마리");
 
@@ -77,23 +80,44 @@ int main()
 		in >> dog;
 	}
 
-	std::function<bool(const Dog, const Dog)> f{ [](const Dog dog1, const Dog dog2) {
+	in.seekg(0, std::ios::beg);
+
+	for (Dog& dog : arr2) {
+		in >> dog;
+	}
+
+	std::function<bool(const Dog, const Dog)> f{ 
+		[](const Dog dog1, const Dog dog2) {
 		return dog1 < dog2;
 		} 
 	};
 
-	auto lamda{ [](const Dog dog1, const Dog dog2) {
+	auto lamda{ 
+		[](const Dog dog1, const Dog dog2) {
 		return dog1 > dog2;
 		} 
 	};
 
 	std::cout << arr.back() << std::endl;
 
-	std::sort(arr.begin(), arr.end(), lamda);
+	auto b = std::chrono::high_resolution_clock().now();
+	std::sort(arr.begin(), arr.end(), f);
+	auto e = std::chrono::high_resolution_clock().now();
 
-	std::cout << arr.back() << std::endl;
+	std::cout << "fuction 소요 시간 - " << e - b << std::endl;
+
+	b = std::chrono::high_resolution_clock().now();
+	std::sort(arr2.begin(), arr2.end(), lamda);
+	e = std::chrono::high_resolution_clock().now();
+
+	std::cout << "lambda 소요 시간 - " << e - b << std::endl;
+
+	{
+		using namespace std;
+		cout << "function 정렬 결과 - " << arr.back() << endl;
+		cout << "lamda 정렬 결과 - " << arr2.back() << endl;
+	}
 
 
 	//save("메인.cpp");
-	MakeQuestion("Dog 천만마리");
 }

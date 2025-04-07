@@ -16,6 +16,7 @@
 #include <array>
 #include <ranges>
 #include <algorithm>
+#include <functional>
 #include "save.h"
 
 
@@ -71,11 +72,13 @@ int main()
 		in >> dog;
 	}
 
+	std::function<bool(const Dog, const Dog)> f = [](const Dog dog1, const Dog dog2) {
+		return dog1 < dog2;
+		};
+
 	std::cout << arr.back() << std::endl;
 
-	std::sort(arr.begin(), arr.end(), [](const Dog dog1, const Dog dog2) {
-		return dog1 < dog2;
-		});
+	std::sort(arr.begin(), arr.end(), f);
 
 	std::cout << arr.back() << std::endl;
 

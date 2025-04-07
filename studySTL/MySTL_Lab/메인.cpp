@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <functional>
 #include "save.h"
+#include "MakeExample.h"
 
 
 // [상황] e-class에서 다운받은 파일 "Dog 십만마리"에는 
@@ -76,13 +77,15 @@ int main()
 		in >> dog;
 	}
 
-	std::function<bool(const Dog, const Dog)> f = [](const Dog dog1, const Dog dog2) {
+	std::function<bool(const Dog, const Dog)> f{ [](const Dog dog1, const Dog dog2) {
 		return dog1 < dog2;
-		};
+		} 
+	};
 
-	auto lamda = [](const Dog dog1, const Dog dog2) {
+	auto lamda{ [](const Dog dog1, const Dog dog2) {
 		return dog1 > dog2;
-		};
+		} 
+	};
 
 	std::cout << arr.back() << std::endl;
 
@@ -92,4 +95,5 @@ int main()
 
 
 	//save("메인.cpp");
+	MakeQuestion("Dog 천만마리");
 }

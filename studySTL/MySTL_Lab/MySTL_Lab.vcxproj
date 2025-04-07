@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MakeExample.cpp" />
     <ClCompile Include="save.cpp" />
     <ClCompile Include="메인.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MakeExample.h" />
     <ClInclude Include="save.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

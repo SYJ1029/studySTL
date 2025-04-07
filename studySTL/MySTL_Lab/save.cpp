@@ -35,7 +35,7 @@ void save(std::string_view filename)
 
 
 	// 2. 쓰기모드로 저장할 파일을 [덧붙이기 모드로] 열기
-	std::ofstream fileout{ "callable 맛보고 교수님에게 혼날 준비.txt", std::ios::app };
+	std::ofstream fileout{ "실습 5주차 1일.txt", std::ios::app };
 
 	using namespace std::chrono_literals;
 	// 시간을 기록하자

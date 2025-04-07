@@ -62,7 +62,7 @@ int main()
 	std::ifstream in("Dog 십만마리");
 
 	if (not in) {
-		std::cout << "cant open :(" << std::endl;
+		std::cout << "can't open :(" << std::endl;
 		exit(15578884);
 	}
 
@@ -73,7 +73,7 @@ int main()
 
 	std::cout << arr.back() << std::endl;
 
-	std::sort(arr.begin(), arr.end(), [](Dog& dog1, Dog& dog2) {
+	std::sort(arr.begin(), arr.end(), [](const Dog dog1, const Dog dog2) {
 		return dog1 < dog2;
 		});
 

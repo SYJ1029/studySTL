@@ -45,6 +45,10 @@ private:
 		return dog1.name.size() < dog2.name.size();
 	}
 
+	friend bool operator>(const Dog& dog1, const Dog& dog2) {
+		return dog1.name.size() > dog2.name.size();
+	}
+
 };
 
 // [문제] 파일에 저장된 10만마리의 Dog객체를 모두 읽어 메모리에 저장하라
@@ -76,16 +80,16 @@ int main()
 		return dog1 < dog2;
 		};
 
+	auto lamda = [](const Dog dog1, const Dog dog2) {
+		return dog1 > dog2;
+		};
+
 	std::cout << arr.back() << std::endl;
 
-	std::sort(arr.begin(), arr.end(), f);
+	std::sort(arr.begin(), arr.end(), lamda);
 
 	std::cout << arr.back() << std::endl;
 
-	{
-		using namespace std;
-		cout << f.target_type().name() << endl;
-	}
 
 	//save("메인.cpp");
 }

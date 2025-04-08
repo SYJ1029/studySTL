@@ -7,101 +7,61 @@
 
 
 /*-------------------------------------------------
-// Callabe types - 호출가능한 타입 ==> 모든 호출가능타입을 대표하는 function
+// class STRING 작성시작 - std::string과 유사한 동작을 한다
 --------------------------------------------------*/
 
 #include <iostream>
-#include <fstream>
 #include <string>
+#include <memory>
 #include <array>
-#include <ranges>
-#include <algorithm>
-#include <functional>
-#include <chrono>
 #include "save.h"
-#include "MakeExample.h"
+
+class STRING {
+public:
+	STRING() {};
+
+	STRING(const char* str) : num{ strlen(str) } {
+		p.release();	// 자원이 있다면 해제하지만 생성 시에 이렇게 할 필요는 없다
+		p = std::make_unique<char[]>(num);		// new - delete 짝을 없애기 위해
+		std::memcpy(p.get(), str, num);				// DMA가 가능하다(Direct Memory Acces) -> cpu의 개입 없이 이송 가능한 명령어
+	}
+
+	STRING(const STRING& str) {
+		num = str.num;
+		p = std::make_unique<char[]>(num);
+		std::memcpy(p.get(), str.p.get(), num);
+	}
+	size_t size() const {
+		return num;
+	}
 
 
-// [상황] e-class에서 다운받은 파일 "Dog 십만마리"에는 
-// 정확하게 Dog 객체 10'0000마리가 저장되어 있다
-// 파일은
-//			ofstream out("Dog 10만마리");
-// Dog 타입의 객체 dog는
-//			out << dog;
-// 코드로 저장하였다
-
-class Dog {
 private:
-	size_t num;					// 랜덤 int 값
-	std::string name;			// [3, 60) 까지의 랜덤 소문자로만 구성
+	size_t num{};
+	std::unique_ptr<char[]> p{};
 
-	friend std::ostream& operator<<(std::ostream& os, const Dog& dog) {
-		return os << dog.num << " " << dog.name << " ";
+	friend std::ostream& operator<<(std::ostream& os, const STRING& s) {
+
+		for (int i = 0; i < s.num; ++i) {
+			os << s.p[i];
+		}
+
+		return os;
 	}
-
-	friend std::istream& operator>>(std::istream& is, Dog& dog) {
-		return is >> dog.num >> dog.name;
-	}
-
-	friend bool operator<(const Dog& dog1, const Dog& dog2) {
-		return dog1.name.size() < dog2.name.size();
-	}
-
-	friend bool operator>(const Dog& dog1, const Dog& dog2) {
-		return dog1.name.size() > dog2.name.size();
-	}
-
 };
-
-// [문제] 파일에 저장된 10만마리의 Dog객체를 모두 읽어 메모리에 저장하라
-// 마지막 객체의 정보를 화면에 출력하고 출력된 내용을 답지에도 적어라
-// 메모리에 있는 Dog객체를 name 길이 기준 오름차순으로 정렬하라
-// 정렬한 마지막 객체의 정보를 화면에 출력하고 답지에도 적어라
-
-std::array<Dog, 10'0000> arr;
 
 //----------------
 int main()
 //----------------
 {
-	std::ifstream in("Dog 십만마리");
+	STRING s{ "std::string과 유사한 클래스" };
 
-	if (not in) {
-		std::cout << "can't open :(" << std::endl;
-		exit(15578884);
-	}
+	std::cout << "s 가 관리하는 자원의 바이트 수 - " << s.size() << std::endl;
 
+	STRING t = s;
 
-	for (Dog& dog : arr) {
-		in >> dog;
-	}
-
-
-	std::function <bool(const Dog&, const Dog&)> f{
-		[](const Dog dog1, const Dog dog2) {
-		return dog1 < dog2;
-		}
-	};
-
-	auto lambda{ 
-		[](const Dog& dog1, const Dog& dog2) {
-		return dog1 < dog2;
-		} 
-	};
-
-	std::cout << arr.back() << std::endl;
-
-	auto b = std::chrono::high_resolution_clock().now();
-	std::sort(arr.begin(), arr.end(), f);
-	auto e = std::chrono::high_resolution_clock().now();
-
-	{
-		using namespace std;
-
-		cout << "duration time - " << e - b << endl;
-		cout << "function 정렬 결과 - " << arr.back() << endl;
-	}
-
-
+	std::cout << s << std::endl;
+	std::cout << t << std::endl;
+	//std::cout << t << std::endl;
 	//save("메인.cpp");
 }

@@ -35,6 +35,13 @@ public:
 		return num;
 	}
 
+	bool operator=(const STRING& str) {
+		num = str.num;
+		p = std::make_unique<char[]>(num);
+		std::memcpy(p.get(), str.p.get(), num);
+
+		return true;
+	}
 
 private:
 	size_t num{};
@@ -48,6 +55,9 @@ private:
 
 		return os;
 	}
+
+public:
+
 };
 
 //----------------
@@ -58,7 +68,8 @@ int main()
 
 	std::cout << "s 가 관리하는 자원의 바이트 수 - " << s.size() << std::endl;
 
-	STRING t = s;
+	STRING t;
+	t = s;
 
 	std::cout << s << std::endl;
 	std::cout << t << std::endl;

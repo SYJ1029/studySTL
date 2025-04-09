@@ -35,9 +35,6 @@ private:
 
 	friend std::ostream& operator<<(std::ostream& os, const STRING& s) {
 
-		for (const char& str : s.p.get()) {
-			os << str;
-		}
 		for (int i = 0; i < s.num; ++i) {
 			os << s.p[i];
 		}

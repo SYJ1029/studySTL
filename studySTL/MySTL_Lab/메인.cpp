@@ -27,6 +27,7 @@ public:
 	}
 
 	STRING(const STRING& str) {
+		p.release();
 		num = str.num;
 		p = std::make_unique<char[]>(num);
 		std::memcpy(p.get(), str.p.get(), num);
@@ -36,6 +37,7 @@ public:
 	}
 
 	bool operator=(const STRING& str) {
+		p.release();		// 새로운 string을 만들어야 하는 p는 자원을 해제해야 한다고 생각
 		num = str.num;
 		p = std::make_unique<char[]>(num);
 		std::memcpy(p.get(), str.p.get(), num);
@@ -56,8 +58,6 @@ private:
 		return os;
 	}
 
-public:
-
 };
 
 //----------------
@@ -65,10 +65,13 @@ int main()
 //----------------
 {
 	STRING s{ "std::string과 유사한 클래스" };
+	STRING s2{ "std::string과 유사한 클래스2" };
 
 	std::cout << "s 가 관리하는 자원의 바이트 수 - " << s.size() << std::endl;
 
-	STRING t;
+	STRING t{ s2 };
+	std::cout << t << std::endl;
+
 	t = s;
 
 	std::cout << s << std::endl;

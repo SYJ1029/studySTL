@@ -45,6 +45,10 @@ public:
 		return true;
 	}
 
+	void append(const char* str) {
+		num += strlen(str);
+	}
+
 private:
 	size_t num{};
 	std::unique_ptr<char[]> p{};
@@ -65,17 +69,15 @@ int main()
 //----------------
 {
 	STRING s{ "std::string과 유사한 클래스" };
-	STRING s2{ "std::string과 유사한 클래스2" };
+	std::string s2{ "std::string입니다" };
 
 	std::cout << "s 가 관리하는 자원의 바이트 수 - " << s.size() << std::endl;
 
-	STRING t{ s2 };
-	std::cout << t << std::endl;
-
-	t = s;
+	s2.append(" 반갑습니다");
+	s.append("입니다");
 
 	std::cout << s << std::endl;
-	std::cout << t << std::endl;
+	std::cout << s2 << std::endl;
 	//std::cout << t << std::endl;
 	//save("메인.cpp");
 }

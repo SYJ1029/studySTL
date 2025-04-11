@@ -21,9 +21,15 @@
     <ClCompile Include="save.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="STRING.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="save.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="STRING.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

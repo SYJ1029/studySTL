@@ -21,9 +21,8 @@ private:
 	std::unique_ptr<char[]> p; // free store에 확보한 메모리
 
 	friend std::ostream& operator<<(std::ostream& os, const Player& player) {
-		std::println("이름: {<:16}, 아이디: {<:8} , 점수: {<:8}, 자원수: {<:4}", player.name, player.id, player.score, player.num);
-
-		return os << "저장된 글자: " << player.p.get();
+		return os << "이름:  " <<  player.name << " 아이디: " << player.id << " 점수: " << player.score << " 자원수: " << player.num
+			<< std::endl << "저장된 글자 : " << player.p.get();
 	}
 
 public:
@@ -37,8 +36,7 @@ public:
 	}
 
 	void read(std::istream& is) {
-		is.read((char*)name.data(), sizeof(std::string));
-		is.read((char*)&score, sizeof(Player) - sizeof(std::string));
+		is.read((char*)name.data(), sizeof(Player) - sizeof(p));
 		p.release();
 		p = std::make_unique<char[]>(num);
 		is.read((char*)p.get(), num);
@@ -63,6 +61,10 @@ void Answer1() {
 	}
 
 
+
+	for (Player& player : players) {
+		std::cout << player << std::endl;
+	}
 }
 
 

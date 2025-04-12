@@ -7,8 +7,9 @@
 #include <fstream>
 #include <string>
 #include <array>
-#include <algorithm>
 #include <memory>
+#include <algorithm>
+#include <numeric>
 #include <print>
 
 
@@ -30,6 +31,9 @@ private:
 			<< std::endl << "저장된 글자 : " << player.p.get();
 	}
 
+	friend int operator+=(int& num, const Player& player) {
+		return num += player.score;
+	}
 public:
 
 	void write(std::ostream& os) {
@@ -47,11 +51,11 @@ public:
 	bool ScoreSort(const Player& other) const {
 		return score < other.score;
 	}
+
 };
 
 
 std::array<Player, 250'0000> players; // ARRAY는 못쓰는건가
-
 
 
 void Answer1() {
@@ -85,7 +89,13 @@ void Answer2() {
 		});
 
 
-	std::cout << *result << std::endl;
+	std::cout << *result << std::endl << std::endl;
+
+	int sum = std::accumulate(players.begin(), players.end(), 0, [](int result, const Player& p) {
+		return result += p;
+		});
+
+	std::cout << "평균: " << sum / players.size() << std::endl;
 }
 
 

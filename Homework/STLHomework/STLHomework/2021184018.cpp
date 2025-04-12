@@ -44,7 +44,7 @@ public:
 };
 
 
-std::array<Player, 250'0000> players;
+std::array<Player, 250'0000> players; // ARRAY는 못쓰는건가
 
 
 

@@ -7,6 +7,8 @@
 #include <fstream>
 #include <string>
 #include <array>
+#include <vector>
+#include <filesystem>
 #include <algorithm>
 #include <memory>
 #include <print>
@@ -28,6 +30,7 @@ private:
 public:
 
 	Player() {
+		p.release();		// 생성시에 p가 공간을 할당받아서는 안된다
 	}
 
 	void write(std::ostream& os) {
@@ -36,7 +39,7 @@ public:
 	}
 
 	void read(std::istream& is) {
-		is.read((char*)name.data(), sizeof(Player) - sizeof(p));
+		is.read((char*)name.data(), sizeof(Player));
 		p.release();
 		p = std::make_unique<char[]>(num);
 		is.read((char*)p.get(), num);
@@ -45,7 +48,6 @@ public:
 
 
 std::array<Player, 250'0000> players; // ARRAY는 못쓰는건가
-
 
 
 

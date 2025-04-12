@@ -7,14 +7,17 @@
 #include <fstream>
 #include <string>
 #include <array>
-#include <vector>
-#include <filesystem>
 #include <algorithm>
 #include <memory>
 #include <print>
 
 
 class Player {
+public:
+
+	Player() {
+		p.release();		// 생성시에 p가 공간을 할당받아서는 안된다
+	}
 private:
 	std::string name; // 이름, 길이[3, 15],  ['a', 'z']로만 구성
 	int score; // 점수
@@ -29,10 +32,6 @@ private:
 
 public:
 
-	Player() {
-		p.release();		// 생성시에 p가 공간을 할당받아서는 안된다
-	}
-
 	void write(std::ostream& os) {
 		os.write((char*)this, sizeof(Player));
 		os.write((char*)p.get(), num);
@@ -44,6 +43,10 @@ public:
 		p = std::make_unique<char[]>(num);
 		is.read((char*)p.get(), num);
 	}
+	
+	bool ScoreSort(const Player& other) const {
+		return score < other.score;
+	}
 };
 
 
@@ -52,6 +55,10 @@ std::array<Player, 250'0000> players; // ARRAY는 못쓰는건가
 
 
 void Answer1() {
+
+	//1. 파일에 저장한 모든 Player 정보를 읽어 컨테이너에 저장하라.
+	//	제일 마지막 Player의 정보를 다음과 같은 형식으로 화면에 출력하라.
+
 	std::ifstream is("2025 STL 과제 파일 - 2021184018", std::ios::binary);
 
 	if (not is)
@@ -64,14 +71,27 @@ void Answer1() {
 
 
 
-	for (Player& player : players) {
-		std::cout << player << std::endl;
-	}
+	std::cout << players.back() << std::endl;
+	
 }
 
+void Answer2() {
+
+	//2. 점수가 가장 큰 Player를 찾아 화면에 출력하라.
+	//	Player의 평균 점수를 계산하여 화면에 출력하라.
+
+	auto result = std::max_element(players.begin(), players.end(), [](const Player& p1, const Player& p2) {
+		return p1.ScoreSort(p2);
+		});
+
+
+	std::cout << *result << std::endl;
+}
 
 
 
 int main() {
 	Answer1();
+	std::cout << std::endl;
+	Answer2();
 }

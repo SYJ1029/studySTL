@@ -98,7 +98,13 @@ void Answer2() {
 	std::cout << "평균: " << sum / players.size() << std::endl;
 }
 
+void Answer3() {
+	//	id가 서로 같은 객체를 찾아 "같은아이디.txt"에 기록하라.
+	//	id가 같은 객체는 모두 몇 개인지 화면에 출력하라.
+	//	파일에는 id가 같은 Player 객체의 이름과 아이디를 한 줄 씩 기록한다
 
+
+}
 
 int main() {
 	Answer1();

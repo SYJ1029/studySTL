@@ -18,6 +18,7 @@ public:
 
 	Player() {
 		p.release();		// 생성시에 p가 공간을 할당받아서는 안된다
+
 	}
 private:
 	std::string name; // 이름, 길이[3, 15],  ['a', 'z']로만 구성
@@ -48,8 +49,12 @@ public:
 		is.read((char*)p.get(), num);
 	}
 	
-	bool ScoreSort(const Player& other) const {
+	bool ScoreLess(const Player& other) const {
 		return score < other.score;
+	}
+
+	bool IdLess(const Player& other) const {
+		return id < other.id;
 	}
 
 };
@@ -84,30 +89,39 @@ void Answer2() {
 	//2. 점수가 가장 큰 Player를 찾아 화면에 출력하라.
 	//	Player의 평균 점수를 계산하여 화면에 출력하라.
 
-	auto result = std::max_element(players.begin(), players.end(), [](const Player& p1, const Player& p2) {
-		return p1.ScoreSort(p2);
-		});
+	auto result = std::max_element(players.begin(), players.end(),[](const Player& p1, const Player& p2) {
+
+		return p1.ScoreLess(p2);
+	});
 
 
 	std::cout << *result << std::endl << std::endl;
 
 	int sum = std::accumulate(players.begin(), players.end(), 0, [](int result, const Player& p) {
 		return result += p;
-		});
+	});
 
 	std::cout << "평균: " << sum / players.size() << std::endl;
 }
 
-void Answer3() {
+void Answer3bySort() {
 	//	id가 서로 같은 객체를 찾아 "같은아이디.txt"에 기록하라.
 	//	id가 같은 객체는 모두 몇 개인지 화면에 출력하라.
 	//	파일에는 id가 같은 Player 객체의 이름과 아이디를 한 줄 씩 기록한다
 
+	
+	std::sort(players.begin(), players.end(), [](const Player& p1, const Player& p2) {
+		return p1.IdLess(p2);
+		});
 
+
+	
 }
 
 int main() {
 	Answer1();
 	std::cout << std::endl;
 	Answer2();
+	std::cout << std::endl;
+	Answer3bySort();
 }

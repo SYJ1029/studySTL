@@ -28,8 +28,7 @@ private:
 	std::unique_ptr<char[]> p; // free store에 확보한 메모리
 
 	friend std::ostream& operator<<(std::ostream& os, const Player& player) {
-		return os << "이름:  " <<  player.name << " 아이디: " << player.id << " 점수: " << player.score << " 자원수: " << player.num
-			<< std::endl << "저장된 글자 : " << player.p.get();
+		return os << "이름:  " << player.name << " 아이디: " << std::endl;
 	}
 
 	friend int operator+=(int& num, const Player& player) {
@@ -49,6 +48,11 @@ public:
 		is.read((char*)p.get(), num);
 	}
 	
+	void Show() {
+		std::cout << "이름:  " << name << " 아이디: " << id << " 점수: " << score << " 자원수: " << num
+			<< std::endl << "저장된 글자 : " << p.get();
+	}
+
 	bool ScoreLess(const Player& other) const {
 		return score < other.score;
 	}
@@ -57,6 +61,9 @@ public:
 		return id < other.id;
 	}
 
+	bool IdSame(const Player& other) const {
+		return id == other.id;
+	}
 };
 
 
@@ -80,7 +87,7 @@ void Answer1() {
 
 
 
-	std::cout << players.back() << std::endl;
+	players.back().Show();
 	
 }
 
@@ -114,7 +121,17 @@ void Answer3bySort() {
 		return p1.IdLess(p2);
 		});
 
+	std::ofstream out ("같은아이디.txt");
 
+	int refcnt{ 0 };
+
+	for (const Player& player : players) {
+		if (&player != &players.front() && player.IdSame(*(&player - 1)) == false) {
+
+			refcnt = 0;
+		}
+		else ++refcnt;
+	}
 	
 }
 

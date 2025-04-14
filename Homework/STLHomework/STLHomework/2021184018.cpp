@@ -10,6 +10,7 @@
 #include <memory>
 #include <algorithm>
 #include <numeric>
+#include <ranges>
 #include <print>
 
 
@@ -28,7 +29,7 @@ private:
 	std::unique_ptr<char[]> p; // free store에 확보한 메모리
 
 	friend std::ostream& operator<<(std::ostream& os, const Player& player) {
-		return os << "이름:  " << player.name << " 아이디: " << std::endl;
+		return os << "이름:  " << player.name << " 아이디: " <<  player.id <<std::endl;
 	}
 
 	friend int operator+=(int& num, const Player& player) {
@@ -42,7 +43,11 @@ public:
 	}
 
 	void read(std::istream& is) {
+#ifdef _DEBUG
+		is.read((char*)name.data(), sizeof(Player) - sizeof(p));
+#else
 		is.read((char*)name.data(), sizeof(Player));
+#endif
 		p.release();
 		p = std::make_unique<char[]>(num);
 		is.read((char*)p.get(), num);
@@ -123,14 +128,30 @@ void Answer3bySort() {
 
 	std::ofstream out ("같은아이디.txt");
 
-	int refcnt{ 0 };
+
+	std::cout << players.back() << std::endl;
+	int cnt{ 1 };
+
+
+	std::unique_ptr<Player> temp = std::make_unique<Player>(players.front());
+
 
 	for (const Player& player : players) {
-		if (&player != &players.front() && player.IdSame(*(&player - 1)) == false) {
+		if (&(*temp.get()) != &player && (*temp.get()).IdSame(player)) {
 
-			refcnt = 0;
+			if (cnt == 2) out << temp;
+			out << player;
+
+			++cnt;
 		}
-		else ++refcnt;
+		else {
+			if(cnt > 1) std::cout << cnt << std::endl;
+			cnt = 1;
+
+			temp.release();
+			temp = std::make_unique<Player>(player);
+			
+		}
 	}
 	
 }

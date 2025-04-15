@@ -161,15 +161,17 @@ void Answer3bySort() {
 
 
 	for (const Player& player : players) {
-		if (temp.IdSame(player)) {
+		if (&player != &players.front() && temp.IdSame(player)) {
 
-			if (cnt == 2) out << temp;
+			if (cnt == 2) 
+				out << temp;
 			out << player;
 
 			++cnt;
 		}
 		else {
-			if(cnt > 1) std::cout << cnt << std::endl;
+			if(cnt > 1) 
+				std::cout << cnt << std::endl;
 			cnt = 1;
 			temp = player;
 			

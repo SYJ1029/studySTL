@@ -21,6 +21,10 @@ public:
 		p.release();		// 생성시에 p가 공간을 할당받아서는 안된다
 
 	}
+
+	Player(const Player& other) {
+		*this = other;
+	}
 private:
 	std::string name; // 이름, 길이[3, 15],  ['a', 'z']로만 구성
 	int score; // 점수
@@ -35,7 +39,20 @@ private:
 	friend int operator+=(int& num, const Player& player) {
 		return num += player.score;
 	}
+
 public:
+
+
+	void operator=(const Player& other){
+		name = other.name;
+		score = other.score;
+		id = other.id;
+		num = other.num;
+
+		p.release();
+		p = std::make_unique<char[]>(num);
+		memcpy(p.get(), other.p.get(), num);
+	}
 
 	void write(std::ostream& os) {
 		os.write((char*)this, sizeof(Player));
@@ -48,6 +65,8 @@ public:
 #else
 		is.read((char*)name.data(), sizeof(Player));
 #endif
+
+
 		p.release();
 		p = std::make_unique<char[]>(num);
 		is.read((char*)p.get(), num);
@@ -55,7 +74,12 @@ public:
 	
 	void Show() {
 		std::cout << "이름:  " << name << " 아이디: " << id << " 점수: " << score << " 자원수: " << num
-			<< std::endl << "저장된 글자 : " << p.get();
+			<< std::endl << "저장된 글자 : ";
+
+		for (int i = 0; i < num; ++i) 
+			std::cout << p[i];
+		std::cout << std::endl;
+
 	}
 
 	bool ScoreLess(const Player& other) const {
@@ -124,7 +148,7 @@ void Answer3bySort() {
 	
 	std::sort(players.begin(), players.end(), [](const Player& p1, const Player& p2) {
 		return p1.IdLess(p2);
-		});
+	});
 
 	std::ofstream out ("같은아이디.txt");
 
@@ -133,11 +157,11 @@ void Answer3bySort() {
 	int cnt{ 1 };
 
 
-	std::unique_ptr<Player> temp = std::make_unique<Player>(players.front());
+	Player temp{ players.front() };
 
 
 	for (const Player& player : players) {
-		if (&(*temp.get()) != &player && (*temp.get()).IdSame(player)) {
+		if (temp.IdSame(player)) {
 
 			if (cnt == 2) out << temp;
 			out << player;
@@ -147,9 +171,7 @@ void Answer3bySort() {
 		else {
 			if(cnt > 1) std::cout << cnt << std::endl;
 			cnt = 1;
-
-			temp.release();
-			temp = std::make_unique<Player>(player);
+			temp = player;
 			
 		}
 	}

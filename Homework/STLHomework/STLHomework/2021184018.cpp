@@ -163,7 +163,7 @@ void Answer3bySort() {
 	for (const Player& player : players) {
 		if (&player != &players.front() && temp.IdSame(player)) {
 
-			if (cnt == 2) 
+			if (cnt == 1) 
 				out << temp;
 			out << player;
 

@@ -178,6 +178,10 @@ void Answer3bySort() {
 	
 }
 
+void Answer4() {
+
+}
+
 int main() {
 	Answer1();
 	std::cout << std::endl;

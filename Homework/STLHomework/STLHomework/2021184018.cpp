@@ -7,6 +7,7 @@
 #include <fstream>
 #include <string>
 #include <array>
+#include <map>
 #include <memory>
 #include <algorithm>
 #include <numeric>
@@ -99,7 +100,8 @@ public:
 std::array<Player, 250'0000> players; // ARRAY는 못쓰는건가
 
 
-void Answer1() {
+void Answer1() 
+{
 
 	//1. 파일에 저장한 모든 Player 정보를 읽어 컨테이너에 저장하라.
 	//	제일 마지막 Player의 정보를 다음과 같은 형식으로 화면에 출력하라.
@@ -178,6 +180,18 @@ void Answer3bySort() {
 		}
 	}
 	
+}
+
+void Answer3byMap() {
+	// id로 그룹핑 하는 건 '정렬'이 필요하지 않다
+	// 파이썬의 dist와 유사한 map 자료구조를 활용해보자
+	// id를 key, name을 value로 갖는 map 자료구조를 생성하면 O(n)만으로도 id 별로 그룹핑 할 수 있다
+
+	std::map<int, std::string> iddist{};
+
+	for (const Player& player : players) {
+		iddist.insert(std::pair<int, std::string>{})
+	}
 }
 
 void Answer4() {

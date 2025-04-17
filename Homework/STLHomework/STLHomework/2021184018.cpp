@@ -7,10 +7,12 @@
 #include <fstream>
 #include <string>
 #include <array>
-#include <map>
+#include <unordered_map>
+#include <vector>
 #include <memory>
 #include <algorithm>
 #include <numeric>
+#include <functional>
 #include <ranges>
 #include <print>
 
@@ -81,6 +83,10 @@ public:
 			std::cout << p[i];
 		std::cout << std::endl;
 
+	}
+
+	int getId() const {
+		return id;
 	}
 
 	bool ScoreLess(const Player& other) const {
@@ -182,20 +188,37 @@ void Answer3bySort() {
 	
 }
 
+
+std::unordered_map<int, std::vector<std::reference_wrapper<const Player>>> idmap{};
+
 void Answer3byMap() {
 	// id로 그룹핑 하는 건 '정렬'이 필요하지 않다
 	// 파이썬의 dist와 유사한 map 자료구조를 활용해보자
 	// id를 key, name을 value로 갖는 map 자료구조를 생성하면 O(n)만으로도 id 별로 그룹핑 할 수 있다
 
-	std::map<int, std::string> iddist{};
+	std::ofstream out("같은아이디.txt");
 
 	for (const Player& player : players) {
-		iddist.insert(std::pair<int, std::string>{})
+		idmap[player.getId()].push_back(std::ref(player));
+
+	}
+
+	for (const auto& [id, group] : idmap) {
+		if (group.size() >= 2) {
+			for (const Player& p : group) {
+				out << p;
+			}
+
+			std::cout << group.size() << std::endl;
+		}
 	}
 }
 
 void Answer4() {
-
+	//4. Player의 멤버 p가 가리키는 메모리에는 파일에서 읽은 num개의 char가
+	//	저장되어 있어야 한다
+	//	메모리에 저장된 char를 오름차순으로 정렬하라.
+	//	'a'가 10글자 이상인 Player의 개수를 화면에 출력하라.
 }
 
 int main() {
@@ -203,5 +226,5 @@ int main() {
 	std::cout << std::endl;
 	Answer2();
 	std::cout << std::endl;
-	Answer3bySort();
+	Answer3byMap();
 }

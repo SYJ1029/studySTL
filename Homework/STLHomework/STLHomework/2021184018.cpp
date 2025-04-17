@@ -226,5 +226,5 @@ int main() {
 	std::cout << std::endl;
 	Answer2();
 	std::cout << std::endl;
-	Answer3byMap();
+	Answer3bySort();
 }

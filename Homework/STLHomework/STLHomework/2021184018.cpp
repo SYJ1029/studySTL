@@ -16,10 +16,11 @@
 #include <ranges>
 #include <print>
 
-#define USING_MAP_FLAG 0
+#define NOT_USING_MAP_FLAG 1
 
 
-class Player {
+class Player 
+{
 public:
 
 	Player() {
@@ -116,6 +117,11 @@ public:
 	bool IdSame(const Player& other) const {
 		return id == other.id;
 	}
+
+	std::pair<char*, int> getBuffer() const {
+
+		return { p.get(), num };
+	}
 };
 
 
@@ -144,7 +150,8 @@ void Answer1()
 	
 }
 
-void Answer2() {
+void Answer2() 
+{
 
 	//2. 점수가 가장 큰 Player를 찾아 화면에 출력하라.
 	//	Player의 평균 점수를 계산하여 화면에 출력하라.
@@ -164,7 +171,10 @@ void Answer2() {
 	std::cout << "평균: " << sum / players.size() << std::endl;
 }
 
-void Answer3bySort() {
+#if NOT_USING_MAP_FLAG
+
+void Answer3bySort() 
+{
 	//	id가 서로 같은 객체를 찾아 "같은아이디.txt"에 기록하라.
 	//	id가 같은 객체는 모두 몇 개인지 화면에 출력하라.
 	//	파일에는 id가 같은 Player 객체의 이름과 아이디를 한 줄 씩 기록한다
@@ -203,10 +213,12 @@ void Answer3bySort() {
 	
 }
 
-#if USING_MAP_FLAG 1
+#else
+
 std::unordered_map<int, std::vector<std::reference_wrapper<const Player>>> idmap{};
 
-void Answer3byMap() {
+void Answer3byMap() 
+{
 	// id로 그룹핑 하는 건 '정렬'이 필요하지 않다
 	// 파이썬의 dist와 유사한 unordered_map 자료구조를 활용해보자
 	// id를 key, name을 value로 갖는 map 자료구조를 생성하면 O(n)만으로도 id 별로 그룹핑 할 수 있다
@@ -234,13 +246,41 @@ void Answer3byMap() {
 
 
 
-void Answer4() {
+void Answer4() 
+{
 	//4. Player의 멤버 p가 가리키는 메모리에는 파일에서 읽은 num개의 char가
 	//	저장되어 있어야 한다
 	//	메모리에 저장된 char를 오름차순으로 정렬하라.
 	//	'a'가 10글자 이상인 Player의 개수를 화면에 출력하라.
 
+	std::sort(players.begin(), players.end(), [](const Player& p1, const Player& p2) {
 
+		return strcmp(p1.getBuffer().first, p2.getBuffer().first) < 0;
+	});
+
+	int cnt{ 0 };
+
+	for (const Player& player : players) {
+		if (std::count(player.getBuffer().first, player.getBuffer().first + player.getBuffer().second, 'a') >= 10) {
+			++cnt;
+		}
+	}
+
+	std::cout << "그 개수: " << cnt << std::endl;
+}
+
+
+void Answer5()
+{
+	int id{ 0 };
+	std::cout << "id 검색: ";
+	std::cin >> id;
+
+#if NOT_USING_MAP_FLAG		// map을 사용하지 않았다
+
+#else						// map을 사용했다
+
+#endif
 }
 
 int main() {
@@ -249,4 +289,11 @@ int main() {
 	Answer2();
 	std::cout << std::endl;
 	Answer3bySort();
+	std::cout << std::endl;
+	Answer4();
+
+	while (1) {
+		Answer5();
+		break;
+	}
 }

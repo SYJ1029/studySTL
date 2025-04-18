@@ -29,9 +29,9 @@ public:
 		*this = other;
 	}
 
-	//Player(const Player&& other) {
-
-	//}
+	Player(Player&& other) {
+		*this = other;
+	}
 
 private:
 	std::string name; // 이름, 길이[3, 15],  ['a', 'z']로만 구성
@@ -60,6 +60,15 @@ public:
 		p.release();
 		p = std::make_unique<char[]>(num);
 		memcpy(p.get(), other.p.get(), num);
+	}
+
+	void operator=(Player&& other) {
+		name = other.name;
+		score = other.score;
+		id = other.id;
+		num = other.num;
+
+		p.reset(other.p.release());
 	}
 
 	void write(std::ostream& os) {

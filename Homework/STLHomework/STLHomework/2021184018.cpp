@@ -28,6 +28,11 @@ public:
 	Player(const Player& other) {
 		*this = other;
 	}
+
+	//Player(const Player&& other) {
+
+	//}
+
 private:
 	std::string name; // 이름, 길이[3, 15],  ['a', 'z']로만 구성
 	int score; // 점수
@@ -103,7 +108,7 @@ public:
 };
 
 
-std::array<Player, 250'0000> players; // ARRAY는 못쓰는건가
+std::array<Player, 250'0000> players;
 
 
 void Answer1() 
@@ -152,7 +157,6 @@ void Answer3bySort() {
 	//	id가 서로 같은 객체를 찾아 "같은아이디.txt"에 기록하라.
 	//	id가 같은 객체는 모두 몇 개인지 화면에 출력하라.
 	//	파일에는 id가 같은 Player 객체의 이름과 아이디를 한 줄 씩 기록한다
-
 	
 	std::sort(players.begin(), players.end(), [](const Player& p1, const Player& p2) {
 		return p1.IdLess(p2);
@@ -193,7 +197,7 @@ std::unordered_map<int, std::vector<std::reference_wrapper<const Player>>> idmap
 
 void Answer3byMap() {
 	// id로 그룹핑 하는 건 '정렬'이 필요하지 않다
-	// 파이썬의 dist와 유사한 map 자료구조를 활용해보자
+	// 파이썬의 dist와 유사한 unordered_map 자료구조를 활용해보자
 	// id를 key, name을 value로 갖는 map 자료구조를 생성하면 O(n)만으로도 id 별로 그룹핑 할 수 있다
 
 	std::ofstream out("같은아이디.txt");

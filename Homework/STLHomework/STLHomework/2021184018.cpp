@@ -16,6 +16,8 @@
 #include <ranges>
 #include <print>
 
+#define USING_MAP_FLAG 0
+
 
 class Player {
 public:
@@ -201,7 +203,7 @@ void Answer3bySort() {
 	
 }
 
-
+#if USING_MAP_FLAG 1
 std::unordered_map<int, std::vector<std::reference_wrapper<const Player>>> idmap{};
 
 void Answer3byMap() {
@@ -227,11 +229,18 @@ void Answer3byMap() {
 	}
 }
 
+#endif 
+
+
+
+
 void Answer4() {
 	//4. Player의 멤버 p가 가리키는 메모리에는 파일에서 읽은 num개의 char가
 	//	저장되어 있어야 한다
 	//	메모리에 저장된 char를 오름차순으로 정렬하라.
 	//	'a'가 10글자 이상인 Player의 개수를 화면에 출력하라.
+
+
 }
 
 int main() {

@@ -16,7 +16,7 @@
 #include <ranges>
 #include <print>
 
-#define NOT_USING_MAP_FLAG 1
+#define NOT_USING_MAP_FLAG 0
 
 
 class Player 
@@ -92,7 +92,7 @@ public:
 		is.read((char*)p.get(), num);
 	}
 	
-	void Show() {
+	void Show() const {
 		std::cout << "이름:  " << name << " 아이디: " << id << " 점수: " << score << " 자원수: " << num
 			<< std::endl << "저장된 글자 : ";
 
@@ -236,7 +236,7 @@ void Answer3byMap()
 				out << p;
 			}
 
-			std::cout << group.size() << std::endl;
+			//std::cout << group.size() << std::endl;
 		}
 	}
 }
@@ -280,6 +280,37 @@ void Answer5()
 
 #else						// map을 사용했다
 
+	if (idmap.find(id) != idmap.end()) {
+		// id에 반응이 왔다면
+
+		int temp{ id - 1 };			// 위로  올라가자
+		while (idmap.find(temp) == idmap.end()) {
+			if (temp <= 0) break;
+			--temp;		// 찾을 때까지
+		}
+
+		for (const Player& p : idmap[temp]) {
+			if (temp <= 0)break;
+			p.Show();
+		}
+
+		temp = id + 1;
+
+		while (idmap.find(temp) == idmap.end()) {
+			if (temp >= 250'0000)break;
+			++temp;		// 찾을 때까지
+		}
+
+		for (const Player& p : idmap[temp]) {
+			if (temp >= 250'0000)break;
+			p.Show();
+		}
+		
+	}
+	else {
+		std::cout << "그런 id는 없습니다" << std::endl;
+	}
+
 #endif
 }
 
@@ -288,12 +319,11 @@ int main() {
 	std::cout << std::endl;
 	Answer2();
 	std::cout << std::endl;
-	Answer3bySort();
+	Answer3byMap();
 	std::cout << std::endl;
 	Answer4();
 
 	while (1) {
 		Answer5();
-		break;
 	}
 }

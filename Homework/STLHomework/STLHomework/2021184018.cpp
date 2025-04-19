@@ -280,29 +280,33 @@ void Answer5()
 
 #else						// map을 사용했다
 
-	if (idmap.find(id) != idmap.end()) {
+	if (idmap[id].size() >= 1) {
 		// id에 반응이 왔다면
 
 		int temp{ id - 1 };			// 위로  올라가자
-		while (idmap.find(temp) == idmap.end()) {
-			if (temp <= 0) break;
+		while (idmap[temp].size() >= 1) {
+			if (temp <= 0) 
+				break;
 			--temp;		// 찾을 때까지
 		}
 
 		for (const Player& p : idmap[temp]) {
-			if (temp <= 0)break;
+			if (temp <= 0)
+				break;
 			p.Show();
 		}
 
 		temp = id + 1;
 
-		while (idmap.find(temp) == idmap.end()) {
-			if (temp >= 250'0000)break;
+		while (idmap[temp].size() >= 1) {
+			if (temp >= 250'0000)
+				break;
 			++temp;		// 찾을 때까지
 		}
 
 		for (const Player& p : idmap[temp]) {
-			if (temp >= 250'0000)break;
+			if (temp >= 250'0000)
+				break;
 			p.Show();
 		}
 		

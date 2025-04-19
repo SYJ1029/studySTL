@@ -280,33 +280,32 @@ void Answer5()
 
 #else						// map을 사용했다
 
-	if (idmap[id].size() >= 1) {
+	if (idmap.contains(id)) {
 		// id에 반응이 왔다면
 
 		int temp{ id - 1 };			// 위로  올라가자
-		while (idmap[temp].size() >= 1) {
-			if (temp <= 0) 
-				break;
+		while (idmap.contains(temp) == false && temp >= 0) {
 			--temp;		// 찾을 때까지
 		}
 
 		for (const Player& p : idmap[temp]) {
 			if (temp <= 0)
 				break;
+
+			std::cout << temp << std::endl;
 			p.Show();
 		}
 
 		temp = id + 1;
 
-		while (idmap[temp].size() >= 1) {
-			if (temp >= 250'0000)
-				break;
+		while (idmap.contains(temp) == false && temp <= 250'0000) {
 			++temp;		// 찾을 때까지
 		}
 
 		for (const Player& p : idmap[temp]) {
 			if (temp >= 250'0000)
 				break;
+			std::cout << temp << std::endl;
 			p.Show();
 		}
 		

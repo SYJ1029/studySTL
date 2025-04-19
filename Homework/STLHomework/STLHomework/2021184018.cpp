@@ -324,7 +324,7 @@ int main() {
 	std::cout << std::endl;
 	Answer3byMap();
 	std::cout << std::endl;
-	Answer4();
+	//Answer4();
 
 	while (1) {
 		Answer5();

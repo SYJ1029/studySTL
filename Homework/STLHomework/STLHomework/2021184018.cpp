@@ -171,9 +171,7 @@ void Answer2()
 	std::cout << "평균: " << sum / players.size() << std::endl;
 }
 
-#if NOT_USING_MAP_FLAG
-
-void Answer3bySort() 
+void Answer3() 
 {
 	//	id가 서로 같은 객체를 찾아 "같은아이디.txt"에 기록하라.
 	//	id가 같은 객체는 모두 몇 개인지 화면에 출력하라.
@@ -213,11 +211,10 @@ void Answer3bySort()
 	
 }
 
-#else
 
 std::unordered_map<int, std::vector<std::reference_wrapper<const Player>>> idmap{};
 
-void Answer3byMap() 
+void SetMap() 
 {
 	// id로 그룹핑 하는 건 '정렬'이 필요하지 않다
 	// 파이썬의 dist와 유사한 unordered_map 자료구조를 활용해보자
@@ -229,19 +226,8 @@ void Answer3byMap()
 		idmap[player.getId()].push_back(std::ref(player));
 
 	}
-
-	for (const auto& [id, group] : idmap) {
-		if (group.size() >= 2) {
-			for (const Player& p : group) {
-				out << p;
-			}
-
-			//std::cout << group.size() << std::endl;
-		}
-	}
 }
 
-#endif 
 
 
 
@@ -322,10 +308,11 @@ int main() {
 	std::cout << std::endl;
 	Answer2();
 	std::cout << std::endl;
-	Answer3byMap();
+	Answer3();
 	std::cout << std::endl;
-	//Answer4();
+	Answer4();
 
+	SetMap();
 	while (1) {
 		Answer5();
 	}

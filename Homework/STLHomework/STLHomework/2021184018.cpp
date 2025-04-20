@@ -122,6 +122,10 @@ public:
 
 		return { p.get(), num };
 	}
+
+	std::string getName() const {
+		return name;
+	}
 };
 
 
@@ -303,6 +307,18 @@ void Answer5()
 #endif
 }
 
+
+
+void NameSort() {
+
+	std::sort(players.begin(), players.end(), [](const Player& p1, const Player& p2) {
+
+
+		return p1.getName() < p2.getName();
+	});
+}
+
+
 int main() {
 	Answer1();
 	std::cout << std::endl;
@@ -312,6 +328,7 @@ int main() {
 	std::cout << std::endl;
 	Answer4();
 
+	NameSort();			// 이름 오름차순으로 정렬
 	SetMap();
 	while (1) {
 		Answer5();

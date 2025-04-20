@@ -195,7 +195,7 @@ void Answer3()
 	Player temp{ players.front() };
 
 
-	for (const Player& player : players) {
+	/*for (const Player& player : players) {
 		if (&player != &players.front() && temp.IdSame(player)) {
 
 			if (cnt == 1) 
@@ -205,13 +205,14 @@ void Answer3()
 			++cnt;
 		}
 		else {
-			if(cnt > 1) 
+			if (cnt > 1) {
 				std::cout << cnt << std::endl;
+			}
 			cnt = 1;
 			temp = player;
 			
 		}
-	}
+	}*/
 	
 }
 
@@ -273,6 +274,9 @@ void Answer5()
 	if (idmap.contains(id)) {
 		// id에 반응이 왔다면
 
+		int64_t index{ &idmap[id].front().get()  - players.data()};		// 배열의 인덱스 얻기
+		std::cout << index << std::endl;
+
 		int temp{ id - 1 };			// 위로  올라가자
 		while (idmap.contains(temp) == false && temp >= 0) {
 			--temp;		// 찾을 때까지
@@ -299,6 +303,9 @@ void Answer5()
 			p.Show();
 		}
 		
+		players[index - 1].Show();
+		players[index + 1].Show();
+
 	}
 	else {
 		std::cout << "그런 id는 없습니다" << std::endl;
@@ -311,11 +318,7 @@ void Answer5()
 
 void NameSort() {
 
-	std::sort(players.begin(), players.end(), [](const Player& p1, const Player& p2) {
 
-
-		return p1.getName() < p2.getName();
-	});
 }
 
 
@@ -328,7 +331,10 @@ int main() {
 	std::cout << std::endl;
 	Answer4();
 
-	NameSort();			// 이름 오름차순으로 정렬
+	std::sort(players.begin(), players.end(), [](const Player& p1, const Player& p2) {
+		return p1.getName() < p2.getName();
+	});
+
 	SetMap();
 	while (1) {
 		Answer5();

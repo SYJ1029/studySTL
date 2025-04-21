@@ -130,6 +130,18 @@ public:
 
 
 std::array<Player, 250'0000> players;
+std::array<std::reference_wrapper<Player>, 250'0000> players_score;
+
+void SortScore()
+{
+	auto itr = players_score.begin();
+	for (Player& player : players) {
+		*itr = std::ref(player);
+		++itr;
+	}
+
+	std::cout << players_score.back();
+}
 
 
 void Answer1() 
@@ -195,7 +207,7 @@ void Answer3()
 	Player temp{ players.front() };
 
 
-	/*for (const Player& player : players) {
+	for (const Player& player : players) {
 		if (&player != &players.front() && temp.IdSame(player)) {
 
 			if (cnt == 1) 
@@ -212,7 +224,7 @@ void Answer3()
 			temp = player;
 			
 		}
-	}*/
+	}
 	
 }
 
@@ -224,8 +236,6 @@ void SetMap()
 	// id로 그룹핑 하는 건 '정렬'이 필요하지 않다
 	// 파이썬의 dist와 유사한 unordered_map 자료구조를 활용해보자
 	// id를 key, name을 value로 갖는 map 자료구조를 생성하면 O(n)만으로도 id 별로 그룹핑 할 수 있다
-
-	std::ofstream out("같은아이디.txt");
 
 	for (const Player& player : players) {
 		idmap[player.getId()].push_back(std::ref(player));
@@ -306,6 +316,8 @@ void Answer5()
 		players[index - 1].Show();
 		players[index + 1].Show();
 
+
+		
 	}
 	else {
 		std::cout << "그런 id는 없습니다" << std::endl;
@@ -325,6 +337,7 @@ void NameSort() {
 int main() {
 	Answer1();
 	std::cout << std::endl;
+	SortScore();
 	Answer2();
 	std::cout << std::endl;
 	Answer3();

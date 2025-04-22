@@ -7,7 +7,7 @@
 #include <fstream>
 #include <string>
 #include <array>
-#include <unordered_map>
+#include <map>
 #include <vector>
 #include <memory>
 #include <algorithm>
@@ -106,6 +106,10 @@ public:
 		return id;
 	}
 
+	int getScore() const {
+		return score;
+	}
+
 	bool ScoreLess(const Player& other) const {
 		return score < other.score;
 	}
@@ -116,6 +120,10 @@ public:
 
 	bool IdSame(const Player& other) const {
 		return id == other.id;
+	}
+
+	int size() {
+		return sizeof(Player) + num;
 	}
 
 	std::pair<char*, int> getBuffer() const {
@@ -130,17 +138,15 @@ public:
 
 
 std::array<Player, 250'0000> players;
-std::array<std::reference_wrapper<Player>, 250'0000> players_score;
-
+std::map<int, std::vector<std::reference_wrapper<const Player>>> scoreMap{};
 void SortScore()
 {
-	auto itr = players_score.begin();
 	for (Player& player : players) {
-		*itr = std::ref(player);
-		++itr;
+		scoreMap[player.getScore()].push_back(std::ref(player));
 	}
 
-	std::cout << players_score.back();
+
+	std::cout << scoreMap.rbegin()->second.front().get() << std::endl;
 }
 
 
@@ -172,13 +178,8 @@ void Answer2()
 	//2. 점수가 가장 큰 Player를 찾아 화면에 출력하라.
 	//	Player의 평균 점수를 계산하여 화면에 출력하라.
 
-	auto result = std::max_element(players.begin(), players.end(),[](const Player& p1, const Player& p2) {
 
-		return p1.ScoreLess(p2);
-	});
-
-
-	std::cout << *result << std::endl << std::endl;
+	std::cout << scoreMap.rbegin()->second.front().get() << std::endl << std::endl;
 
 	int sum = std::accumulate(players.begin(), players.end(), 0, [](int result, const Player& p) {
 		return result += p;
@@ -229,7 +230,7 @@ void Answer3()
 }
 
 
-std::unordered_map<int, std::vector<std::reference_wrapper<const Player>>> idmap{};
+std::map<int, std::vector<std::reference_wrapper<const Player>>> idmap{};
 
 void SetMap() 
 {
@@ -316,8 +317,9 @@ void Answer5()
 		players[index - 1].Show();
 		players[index + 1].Show();
 
-
+		// players_score에서 몇번째인가
 		
+		scoreMap[players[index].getScore()];
 	}
 	else {
 		std::cout << "그런 id는 없습니다" << std::endl;
@@ -348,6 +350,7 @@ int main() {
 		return p1.getName() < p2.getName();
 	});
 
+	SortScore();
 	SetMap();
 	while (1) {
 		Answer5();

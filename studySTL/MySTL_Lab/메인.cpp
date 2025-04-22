@@ -1,83 +1,41 @@
 /*--------------------------------
-// 2025학년도 1학기 STL 월910수910				(5주 1일)
-// 3월 17일 월요일
+// 2025학년도 1학기 STL 월910수910				(7주 2일)
+// 4월 10일 목요일
 // 중간고사		- 8주 1일(4월 24일 목요일)
-// 과제설명(30)	- 6주 1일(4월 10일 목요일)
 ---------------------------------*/
 
 
-/*-------------------------------------------------
-// class STRING 작성시작 - std::string과 유사한 동작을 한다
---------------------------------------------------*/
+/*----------------------------------------------------------------
+// STL Container - Containers are objects that store other objects
+// array -
+// vector - at 예제는 하고 가자
+------------------------------------------------------------------*/
 
 #include <iostream>
+#include <vector>
 #include <string>
-#include <memory>
-#include <array>
+#include <algorithm>
+#include <fstream>
 #include "save.h"
+#include "STRING.h"
 
-class STRING {
-public:
-	STRING() {};
 
-	STRING(const char* str) : num{ strlen(str) } {
-		p.release();	// 자원이 있다면 해제하지만 생성 시에 이렇게 할 필요는 없다
-		p = std::make_unique<char[]>(num);		// new - delete 짝을 없애기 위해
-		std::memcpy(p.get(), str, num);				// DMA가 가능하다(Direct Memory Acces) -> cpu의 개입 없이 이송 가능한 명령어
-	}
+extern bool 관찰;				// 관찰하려면 true로
 
-	STRING(const STRING& str) {
-		p.release();
-		num = str.num;
-		p = std::make_unique<char[]>(num);
-		std::memcpy(p.get(), str.p.get(), num);
-	}
-	size_t size() const {
-		return num;
-	}
-
-	bool operator=(const STRING& str) {
-		p.release();		// 새로운 string을 만들어야 하는 p는 자원을 해제해야 한다고 생각
-		num = str.num;
-		p = std::make_unique<char[]>(num);
-		std::memcpy(p.get(), str.p.get(), num);
-
-		return true;
-	}
-
-	void append(const char* str) {
-		num += strlen(str);
-	}
-
-private:
-	size_t num{};
-	std::unique_ptr<char[]> p{};
-
-	friend std::ostream& operator<<(std::ostream& os, const STRING& s) {
-
-		for (int i = 0; i < s.num; ++i) {
-			os << s.p[i];
-		}
-
-		return os;
-	}
-
-};
+//[문제] 키보드에서 단어를 모두 입력받아 오름차순으로 정렬한 후 출력하라.
 
 //----------------
 int main()
 //----------------
 {
-	STRING s{ "std::string과 유사한 클래스" };
-	std::string s2{ "std::string입니다" };
+	std::ifstream in("메인.cpp");
+	std::vector<std::string> v{ std::istream_iterator<std::string>{in}, {} };
 
-	std::cout << "s 가 관리하는 자원의 바이트 수 - " << s.size() << std::endl;
+	std::sort(v.begin(), v.end());
 
-	s2.append(" 반갑습니다");
-	s.append("입니다");
+	for (const std::string& s : v) {
+		std::cout << s << std::endl;
+	}
 
-	std::cout << s << std::endl;
-	std::cout << s2 << std::endl;
-	//std::cout << t << std::endl;
-	//save("메인.cpp");
+	save("메인.cpp");
 }

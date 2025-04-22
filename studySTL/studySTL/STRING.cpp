@@ -16,7 +16,7 @@ size_t STRING::gid{ 0 };				// 2025. 4. 10 고유번호 생성
 bool 관찰{ false };
 
 STRING::STRING()
-	: id{ gid++ }
+	: id{ ++gid }
 {
 	//std::println("[{:6}]", id);
 	if (관찰) {
@@ -36,7 +36,7 @@ STRING::~STRING()
 }
 
 STRING::STRING(const char* str)
-	: num{ strlen(str) }, id{ gid++ }
+	: num{ strlen(str) }, id{ ++gid }
 {
 	p.release();	// 자원이 있다면 해제하지만 생성 시에 이렇게 할 필요는 없다
 	p = std::make_unique<char[]>(num);		// new - delete 짝을 없애기 위해
@@ -50,7 +50,7 @@ STRING::STRING(const char* str)
 
 // 복사생성자와 복사할당연산자
 STRING::STRING(const STRING& other)
-	: num{ other.num }, id{ gid++ }
+	: num{ other.num }, id{ ++gid }
 {
 	//*this = other;			// 복사 생성은 할당을 이용하라
 
@@ -88,7 +88,7 @@ STRING::STRING(STRING&& other)
 {
 	p.reset(other.p.release());
 
-	//other.num = 0;		// 안 해도 된다
+	other.num = 0;		// 안 해도 된다
 	// sort는 대상을 명시적으로 쓰지 않기 때문에 필요가 없다
 
 	if (관찰) {
@@ -106,7 +106,7 @@ STRING& STRING::operator=(STRING&& other)
 	p.release();			//내가 확보한 자원을 해제
 	p.reset(other.p.release());
 
-	//other.num = 0;		// 안 해도 된다
+	other.num = 0;		// 안 해도 된다
 	if (관찰) {
 		std::println("[{:6}] {:<16} 자원수: {:4}, 주소: {:16} 자원의 주소: {:16}",
 			id, "mover operator=", num, (void*)this, (void*)p.get());

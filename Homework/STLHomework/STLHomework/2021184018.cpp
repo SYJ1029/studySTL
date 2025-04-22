@@ -141,12 +141,16 @@ std::array<Player, 250'0000> players;
 std::map<int, std::vector<std::reference_wrapper<const Player>>> scoreMap{};
 void SortScore()
 {
+
+	if (not scoreMap.empty())scoreMap.clear();		// 이전 데이터는 전부 지우기
+
 	for (Player& player : players) {
 		scoreMap[player.getScore()].push_back(std::ref(player));
 	}
 
 
 	std::cout << scoreMap.rbegin()->second.front().get() << std::endl;
+	std::cout << "Score를 key로 한 map 생성 완료" << std::endl;
 }
 
 
@@ -288,6 +292,8 @@ void Answer5()
 		int64_t index{ &idmap[id].front().get()  - players.data()};		// 배열의 인덱스 얻기
 		std::cout << index << std::endl;
 
+		std::cout << "<<<id 기준>>>" << std::endl;
+
 		int temp{ id - 1 };			// 위로  올라가자
 		while (idmap.contains(temp) == false && temp >= 0) {
 			--temp;		// 찾을 때까지
@@ -297,7 +303,7 @@ void Answer5()
 			if (temp <= 0)
 				break;
 
-			std::cout << temp << std::endl;
+			std::cout << "이전 값" << std::endl;
 			p.Show();
 		}
 
@@ -310,16 +316,33 @@ void Answer5()
 		for (const Player& p : idmap[temp]) {
 			if (temp >= 250'0000)
 				break;
-			std::cout << temp << std::endl;
+
+			std::cout << "이후 값" << std::endl;
 			p.Show();
 		}
 		
+
+		std::cout << "<<<이름 기준>>>" << std::endl;
+
+		std::cout << "이전 값" << std::endl;
 		players[index - 1].Show();
+		std::cout << "이후 값" << std::endl;
 		players[index + 1].Show();
 
 		// players_score에서 몇번째인가
 		
 		scoreMap[players[index].getScore()];
+
+		auto lower = scoreMap.lower_bound(players[index].getScore());
+		auto upper = (lower != scoreMap.begin()) ? lower : std::prev(lower);
+
+
+		std::cout << "<<<Score 기준>>>" << std::endl;
+
+		std::cout << "이전 값" << std::endl;
+		lower->second.front().get().Show();
+		std::cout << "이후 값" << std::endl;
+		upper->second.front().get().Show();
 	}
 	else {
 		std::cout << "그런 id는 없습니다" << std::endl;

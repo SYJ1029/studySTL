@@ -21,16 +21,24 @@ extern bool 관찰;				// 관찰하려면 true로
 
 //[문제] 키보드에서 단어를 모두 입력받아 오름차순으로 정렬한 후 출력하라.
 
+void 실험() {
+	using namespace std;
+
+	unique_ptr<int> p;
+
+	for(int i = 0; i < 1000000000; ++i) {
+		p = make_unique<int>(i);
+		p.release();
+	}
+}
+
 //----------------
 int main()
 //----------------
 {
-	using namespace std;
-	unique_ptr<int> p;
+	실험();
 	while (1) {
-		p = make_unique<int>(1557);
-		p.reset();		// 진짜네????????
-	}
 
+	}
 	//save("메인.cpp");
 }

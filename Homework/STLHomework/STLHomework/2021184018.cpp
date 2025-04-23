@@ -303,7 +303,9 @@ void Answer5()
 		std::cout << "이후 값" << std::endl << std::endl;
 		std::next(itr)->second.front().get().Show();
 
-		std::cout << "<<<이름 기준>>>" << std::endl;
+
+
+		std::cout << "<<<이름 기준>>>" << std::endl << std::endl;
 
 		std::cout << "이전 값" << std::endl << std::endl;
 		players[index - 1].Show();
@@ -314,30 +316,21 @@ void Answer5()
 		
 		scoreMap[players[index].getScore()];
 
-
-		auto lower = std::prev(scoreMap.find(players[index].getScore()));
-		auto upper = std::next(std::next(lower));
+		itr = scoreMap.find(players[index].getScore());
 
 
 		std::cout << "<<<Score 기준>>>" << std::endl << std::endl;
 
 		std::cout << "이전 값" << std::endl << std::endl;
-		lower->second.front().get().Show();
+		std::prev(itr)->second.front().get().Show();
 		std::cout << "이후 값" << std::endl << std::endl;
-		upper->second.front().get().Show();
+		std::next(itr)->second.front().get().Show();
 	}
 	else {
 		std::cout << "그런 id는 없습니다" << std::endl << std::endl;
 	}
 
 #endif
-}
-
-
-
-void NameSort() {
-
-
 }
 
 

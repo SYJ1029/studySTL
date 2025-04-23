@@ -277,60 +277,63 @@ void Answer4()
 
 void Answer5()
 {
-	int id{ 0 };
-	std::cout << "id 검색: ";
-	std::cin >> id;
+
+	while (1) {
+		int id{ 0 };
+		std::cout << "id 검색: ";
+		std::cin >> id;
 
 #if NOT_USING_MAP_FLAG		// map을 사용하지 않았다
 
 #else						// map을 사용했다
 
-	if (idmap.contains(id)) {
-		// id에 반응이 왔다면
+		if (idmap.contains(id)) {
+			// id에 반응이 왔다면
 
-		int64_t index{ &idmap[id].front().get()  - players.data()};		// 배열의 인덱스 얻기
+			int64_t index{ &idmap[id].front().get() - players.data() };		// 배열의 인덱스 얻기
 
-		std::cout << idmap[id].front().get() << "을 찾았습니다" << std::endl << std::endl;
-		
-		idmap[id].front().get().Show();
+			std::cout << idmap[id].front().get() << "을 찾았습니다" << std::endl << std::endl;
 
-		auto itr = idmap.find(id);
+			idmap[id].front().get().Show();
 
-		std::cout << "<<<id 기준>>>" << std::endl << std::endl;
-		
-		std::cout << "이전 값" << std::endl << std::endl;
-		std::prev(itr)->second.front().get().Show();
-		std::cout << "이후 값" << std::endl << std::endl;
-		std::next(itr)->second.front().get().Show();
+			auto itr = idmap.find(id);
 
+			std::cout << "<<<id 기준>>>" << std::endl << std::endl;
 
-
-		std::cout << "<<<이름 기준>>>" << std::endl << std::endl;
-
-		std::cout << "이전 값" << std::endl << std::endl;
-		players[index - 1].Show();
-		std::cout << "이후 값" << std::endl << std::endl;
-		players[index + 1].Show();
-
-		// players_score에서 몇번째인가
-		
-		scoreMap[players[index].getScore()];
-
-		itr = scoreMap.find(players[index].getScore());
+			std::cout << "이전 값" << std::endl << std::endl;
+			std::prev(itr)->second.front().get().Show();
+			std::cout << "이후 값" << std::endl << std::endl;
+			std::next(itr)->second.front().get().Show();
 
 
-		std::cout << "<<<Score 기준>>>" << std::endl << std::endl;
 
-		std::cout << "이전 값" << std::endl << std::endl;
-		std::prev(itr)->second.front().get().Show();
-		std::cout << "이후 값" << std::endl << std::endl;
-		std::next(itr)->second.front().get().Show();
-	}
-	else {
-		std::cout << "그런 id는 없습니다" << std::endl << std::endl;
-	}
+			std::cout << "<<<이름 기준>>>" << std::endl << std::endl;
+
+			std::cout << "이전 값" << std::endl << std::endl;
+			players[index - 1].Show();
+			std::cout << "이후 값" << std::endl << std::endl;
+			players[index + 1].Show();
+
+			// players_score에서 몇번째인가
+
+			scoreMap[players[index].getScore()];
+
+			itr = scoreMap.find(players[index].getScore());
+
+
+			std::cout << "<<<Score 기준>>>" << std::endl << std::endl;
+
+			std::cout << "이전 값" << std::endl << std::endl;
+			std::prev(itr)->second.front().get().Show();
+			std::cout << "이후 값" << std::endl << std::endl;
+			std::next(itr)->second.front().get().Show();
+		}
+		else {
+			std::cout << "그런 id는 없습니다" << std::endl << std::endl;
+		}
 
 #endif
+	}
 }
 
 
@@ -350,7 +353,6 @@ int main() {
 
 	SortScore();
 	SetMap();
-	while (1) {
-		Answer5();
-	}
+	Answer5();
+	
 }

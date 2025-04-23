@@ -98,8 +98,7 @@ public:
 
 		for (int i = 0; i < num; ++i) 
 			std::cout << p[i];
-		std::cout << std::endl;
-
+		std::cout << std::endl << std::endl;
 	}
 
 	int getId() const {
@@ -149,7 +148,7 @@ void SortScore()
 	}
 
 
-	std::cout << scoreMap.rbegin()->second.front().get() << std::endl;
+	//std::cout << scoreMap.rbegin()->second.front().get() << std::endl;
 	std::cout << "Score를 key로 한 map 생성 완료" << std::endl;
 }
 
@@ -223,7 +222,7 @@ void Answer3()
 		}
 		else {
 			if (cnt > 1) {
-				std::cout << cnt << std::endl;
+				std::cout << cnt << " ";
 			}
 			cnt = 1;
 			temp = player;
@@ -231,6 +230,7 @@ void Answer3()
 		}
 	}
 	
+	std::cout << std::endl;
 }
 
 
@@ -239,8 +239,7 @@ std::map<int, std::vector<std::reference_wrapper<const Player>>> idmap{};
 void SetMap() 
 {
 	// id로 그룹핑 하는 건 '정렬'이 필요하지 않다
-	// 파이썬의 dist와 유사한 unordered_map 자료구조를 활용해보자
-	// id를 key, name을 value로 갖는 map 자료구조를 생성하면 O(n)만으로도 id 별로 그룹핑 할 수 있다
+	// 탐색에 있어 O(logn)으로 줄일 수 있는 map을 사용하여보자
 
 	for (const Player& player : players) {
 		idmap[player.getId()].push_back(std::ref(player));
@@ -272,7 +271,7 @@ void Answer4()
 		}
 	}
 
-	std::cout << "그 개수: " << cnt << std::endl;
+	std::cout << "a가 10글자 이상인 Player의 개수: " << cnt << std::endl;
 }
 
 
@@ -290,43 +289,25 @@ void Answer5()
 		// id에 반응이 왔다면
 
 		int64_t index{ &idmap[id].front().get()  - players.data()};		// 배열의 인덱스 얻기
-		std::cout << index << std::endl;
 
-		std::cout << "<<<id 기준>>>" << std::endl;
-
-		int temp{ id - 1 };			// 위로  올라가자
-		while (idmap.contains(temp) == false && temp >= 0) {
-			--temp;		// 찾을 때까지
-		}
-
-		for (const Player& p : idmap[temp]) {
-			if (temp <= 0)
-				break;
-
-			std::cout << "이전 값" << std::endl;
-			p.Show();
-		}
-
-		temp = id + 1;
-
-		while (idmap.contains(temp) == false && temp <= 250'0000) {
-			++temp;		// 찾을 때까지
-		}
-
-		for (const Player& p : idmap[temp]) {
-			if (temp >= 250'0000)
-				break;
-
-			std::cout << "이후 값" << std::endl;
-			p.Show();
-		}
+		std::cout << idmap[id].front().get() << "을 찾았습니다" << std::endl << std::endl;
 		
+		idmap[id].front().get().Show();
+
+		auto itr = idmap.find(id);
+
+		std::cout << "<<<id 기준>>>" << std::endl << std::endl;
+		
+		std::cout << "이전 값" << std::endl << std::endl;
+		std::prev(itr)->second.front().get().Show();
+		std::cout << "이후 값" << std::endl << std::endl;
+		std::next(itr)->second.front().get().Show();
 
 		std::cout << "<<<이름 기준>>>" << std::endl;
 
-		std::cout << "이전 값" << std::endl;
+		std::cout << "이전 값" << std::endl << std::endl;
 		players[index - 1].Show();
-		std::cout << "이후 값" << std::endl;
+		std::cout << "이후 값" << std::endl << std::endl;
 		players[index + 1].Show();
 
 		// players_score에서 몇번째인가
@@ -335,18 +316,18 @@ void Answer5()
 
 
 		auto lower = std::prev(scoreMap.find(players[index].getScore()));
-		auto upper = std::next(scoreMap.find(players[index].getScore()));
+		auto upper = std::next(std::next(lower));
 
 
-		std::cout << "<<<Score 기준>>>" << std::endl;
+		std::cout << "<<<Score 기준>>>" << std::endl << std::endl;
 
-		std::cout << "이전 값" << std::endl;
+		std::cout << "이전 값" << std::endl << std::endl;
 		lower->second.front().get().Show();
-		std::cout << "이후 값" << std::endl;
+		std::cout << "이후 값" << std::endl << std::endl;
 		upper->second.front().get().Show();
 	}
 	else {
-		std::cout << "그런 id는 없습니다" << std::endl;
+		std::cout << "그런 id는 없습니다" << std::endl << std::endl;
 	}
 
 #endif

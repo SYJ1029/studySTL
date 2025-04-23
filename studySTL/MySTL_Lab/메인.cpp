@@ -29,7 +29,7 @@ int main()
 //----------------
 {
 	std::ifstream in("메인.cpp");
-	std::vector<std::string> v{ std::istream_iterator<std::string>{in}, {} };
+	std::vector<std::string> v{ std::istream_iterator<std::string>{std::cin}, {} };
 
 	std::sort(v.begin(), v.end());
 
@@ -37,5 +37,5 @@ int main()
 		std::cout << s << std::endl;
 	}
 
-	save("메인.cpp");
+	//save("메인.cpp");
 }

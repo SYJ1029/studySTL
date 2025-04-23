@@ -29,7 +29,7 @@ int main()
 	unique_ptr<int> p;
 	while (1) {
 		p = make_unique<int>(1557);
-		p.reset();
+		p.reset();		// 진짜네????????
 	}
 
 	//save("메인.cpp");

@@ -24,7 +24,7 @@ class Player
 public:
 
 	Player() {
-		p.release();		// 생성시에 p가 공간을 할당받아서는 안된다
+		p.reset();		// 생성시에 p가 공간을 할당받아서는 안된다
 
 	}
 
@@ -62,7 +62,7 @@ public:
 		id = other.id;
 		num = other.num;
 
-		p.release();
+		p.reset();
 		p = std::make_unique<char[]>(num);
 		memcpy(p.get(), other.p.get(), num);
 	}

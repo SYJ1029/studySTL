@@ -333,8 +333,9 @@ void Answer5()
 		
 		scoreMap[players[index].getScore()];
 
-		auto lower = scoreMap.lower_bound(players[index].getScore());
-		auto upper = (lower != scoreMap.begin()) ? lower : std::prev(lower);
+
+		auto lower = std::prev(scoreMap.find(players[index].getScore()));
+		auto upper = std::next(scoreMap.find(players[index].getScore()));
 
 
 		std::cout << "<<<Score ±âÁØ>>>" << std::endl;

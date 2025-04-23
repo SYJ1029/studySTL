@@ -26,9 +26,8 @@ void 실험() {
 
 	unique_ptr<int> p;
 
-	for(int i = 0; i < 1000000000; ++i) {
-		p = make_unique<int>(i);
-		p.release();
+	while(1) {
+		p = make_unique<int>(1557);
 	}
 }
 
@@ -37,8 +36,5 @@ int main()
 //----------------
 {
 	실험();
-	while (1) {
-
-	}
 	//save("메인.cpp");
 }

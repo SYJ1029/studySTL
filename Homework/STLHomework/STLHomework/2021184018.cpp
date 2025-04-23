@@ -130,7 +130,7 @@ public:
 		return sizeof(Player) + num;
 	}
 
-	std::pair<char*, int> getBuffer() const {
+	std::string_view getBuffer() const {
 
 		return { p.get(), num };
 	}
@@ -264,14 +264,13 @@ void Answer4()
 	//	'a'가 10글자 이상인 Player의 개수를 화면에 출력하라.
 
 	std::sort(players.begin(), players.end(), [](const Player& p1, const Player& p2) {
-
-		return strcmp(p1.getBuffer().first, p2.getBuffer().first) < 0;
+		return p1.getBuffer() < p2.getBuffer();
 	});
 
 	int cnt{ 0 };
 
 	for (const Player& player : players) {
-		if (std::count(player.getBuffer().first, player.getBuffer().first + player.getBuffer().second, 'a') >= 10) {
+		if (std::count(player.getBuffer().begin(), player.getBuffer().end(), 'a') >= 10) {
 			++cnt;
 		}
 	}
@@ -288,9 +287,6 @@ void Answer5()
 		std::cout << "id 검색: ";
 		std::cin >> id;
 
-#if NOT_USING_MAP_FLAG		// map을 사용하지 않았다
-
-#else						// map을 사용했다
 
 		if (idmap.contains(id)) {
 			// id에 반응이 왔다면
@@ -337,7 +333,7 @@ void Answer5()
 			std::cout << "그런 id는 없습니다" << std::endl << std::endl;
 		}
 
-#endif
+
 	}
 }
 
@@ -353,9 +349,8 @@ int main() {
 	Answer4();
 
 	std::sort(players.begin(), players.end(), [](const Player& p1, const Player& p2) {
-		return p1.getName() < p2.getName();
-	});
-
+		return p1.getScore() < p2.getScore();
+		});
 	SortScore();
 	SetMap();
 	Answer5();

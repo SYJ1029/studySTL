@@ -55,6 +55,8 @@ public:
 
 
 	void operator=(const Player& other){
+		if (this == &other) return;
+
 		name = other.name;
 		score = other.score;
 		id = other.id;
@@ -66,7 +68,10 @@ public:
 	}
 
 	void operator=(Player&& other) {
-		name = other.name;
+
+		if (this == &other) return;
+
+		name = std::move(other.name);
 		score = other.score;
 		id = other.id;
 		num = other.num;

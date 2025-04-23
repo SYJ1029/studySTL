@@ -12,10 +12,7 @@
 ------------------------------------------------------------------*/
 
 #include <iostream>
-#include <vector>
-#include <string>
-#include <algorithm>
-#include <fstream>
+#include <memory>
 #include "save.h"
 #include "STRING.h"
 
@@ -28,13 +25,11 @@ extern bool 관찰;				// 관찰하려면 true로
 int main()
 //----------------
 {
-	std::ifstream in("메인.cpp");
-	std::vector<std::string> v{ std::istream_iterator<std::string>{std::cin}, {} };
-
-	std::sort(v.begin(), v.end());
-
-	for (const std::string& s : v) {
-		std::cout << s << std::endl;
+	using namespace std;
+	unique_ptr<int> p;
+	while (1) {
+		p = make_unique<int>(1557);
+		p.reset();
 	}
 
 	//save("메인.cpp");

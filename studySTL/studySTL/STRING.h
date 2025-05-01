@@ -3,6 +3,7 @@
 // 
 // 2025. 4 . 10 - 시작
 // 2025. 4 . 14 - 이동의미론(move semantics) 구현 
+// 2025. 5 . 1	- operator==
 //-------------------------------------------------------------------------
 #pragma once
 
@@ -28,6 +29,8 @@ public:
 
 	// 기본정렬을 위한 <		2025. 4. 14
 	bool operator<(const STRING&) const;
+	// 같은 객체인지 비교 ==		2025. 5. 1
+	bool operator==(const STRING&) const;
 
 
 	size_t size() const;

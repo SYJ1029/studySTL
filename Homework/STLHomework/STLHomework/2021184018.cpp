@@ -325,9 +325,11 @@ void Answer5()
 			std::cout << "<<<Score 기준>>>" << std::endl << std::endl;
 
 			std::cout << "이전 값" << std::endl << std::endl;
-			std::prev(itr)->second.front().get().Show();
+			(--itr)->second.front().get().Show();
+			//std::prev(itr)->second.front().get().Show();
 			std::cout << "이후 값" << std::endl << std::endl;
-			std::next(itr)->second.front().get().Show();
+			(++++itr)->second.front().get().Show();
+			//std::next(itr)->second.front().get().Show();
 		}
 		else {
 			std::cout << "그런 id는 없습니다" << std::endl << std::endl;
@@ -349,7 +351,7 @@ int main() {
 	Answer4();
 
 	std::sort(players.begin(), players.end(), [](const Player& p1, const Player& p2) {
-		return p1.getScore() < p2.getScore();
+		return p1.getName() < p2.getName();
 		});
 	SortScore();
 	SetMap();

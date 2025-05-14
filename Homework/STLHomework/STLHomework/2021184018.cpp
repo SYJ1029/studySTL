@@ -189,6 +189,11 @@ void Answer2()
 
 	std::cout << scoreMap.rbegin()->second.front().get() << std::endl << std::endl;
 
+	std::cout << *std::max_element(players.begin(), players.end(), [](const Player& lhs, const Player& rhs) {
+		return lhs.getScore() < rhs.getScore();
+		}) << std::endl << std::endl;
+
+
 	int sum = std::accumulate(players.begin(), players.end(), 0, [](int result, const Player& p) {
 		return result += p;
 	});
@@ -289,9 +294,10 @@ void Answer5()
 
 
 		if (idmap.contains(id)) {
-			// id에 반응이 왔다면
 
 			int64_t index{ &idmap[id].front().get() - players.data() };		// 배열의 인덱스 얻기
+
+
 
 			std::cout << idmap[id].front().get() << "을 찾았습니다" << std::endl << std::endl;
 
@@ -336,6 +342,7 @@ void Answer5()
 		}
 
 
+		std::cin.clear();
 	}
 }
 

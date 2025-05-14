@@ -186,9 +186,6 @@ void Answer2()
 	//2. 점수가 가장 큰 Player를 찾아 화면에 출력하라.
 	//	Player의 평균 점수를 계산하여 화면에 출력하라.
 
-
-	std::cout << scoreMap.rbegin()->second.front().get() << std::endl << std::endl;
-
 	std::cout << *std::max_element(players.begin(), players.end(), [](const Player& lhs, const Player& rhs) {
 		return lhs.getScore() < rhs.getScore();
 		}) << std::endl << std::endl;
@@ -295,7 +292,6 @@ void Answer5()
 
 		if (idmap.contains(id)) {
 
-			int64_t index{ &idmap[id].front().get() - players.data() };		// 배열의 인덱스 얻기
 
 
 
@@ -311,6 +307,8 @@ void Answer5()
 			std::prev(itr)->second.front().get().Show();
 			std::cout << "이후 값" << std::endl << std::endl;
 			std::next(itr)->second.front().get().Show();
+
+			int64_t index{ &idmap[id].front().get() - players.data() };		// 배열의 인덱스 얻기
 
 
 
@@ -350,7 +348,6 @@ void Answer5()
 int main() {
 	Answer1();
 	std::cout << std::endl;
-	SortScore();
 	Answer2();
 	std::cout << std::endl;
 	Answer3();

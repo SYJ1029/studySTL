@@ -91,7 +91,6 @@ public:
 		is.read((char*)name.data(), sizeof(Player));
 #endif
 
-
 		p.release();
 		p = std::make_unique<char[]>(num);
 		is.read((char*)p.get(), num);
@@ -142,20 +141,7 @@ public:
 
 
 std::array<Player, 250'0000> players;
-std::map<int, std::vector<std::reference_wrapper<const Player>>> scoreMap{};
-void SortScore()
-{
 
-	if (not scoreMap.empty())scoreMap.clear();		// 이전 데이터는 전부 지우기
-
-	for (Player& player : players) {
-		scoreMap[player.getScore()].push_back(std::ref(player));
-	}
-
-
-	//std::cout << scoreMap.rbegin()->second.front().get() << std::endl;
-	std::cout << "Score를 key로 한 map 생성 완료" << std::endl;
-}
 
 
 void Answer1() 
@@ -242,6 +228,8 @@ void Answer3()
 
 
 std::map<int, std::vector<std::reference_wrapper<const Player>>> idmap{};
+std::map<std::string, std::vector<std::reference_wrapper<const Player>>> nameMap{};
+std::map<int, std::vector<std::reference_wrapper<const Player>>> scoreMap{};
 
 void SetMap() 
 {
@@ -250,7 +238,8 @@ void SetMap()
 
 	for (const Player& player : players) {
 		idmap[player.getId()].push_back(std::ref(player));
-
+		nameMap[player.getName()].push_back(std::ref(player));
+		scoreMap[player.getScore()].push_back(std::ref(player));
 	}
 }
 
@@ -276,7 +265,6 @@ void Answer4()
 			++cnt;
 		}
 	}
-
 	std::cout << "a가 10글자 이상인 Player의 개수: " << cnt << std::endl;
 }
 
@@ -290,25 +278,42 @@ void Answer5()
 		std::cin >> id;
 
 
-		if (idmap.contains(id)) {
+		auto itr = idmap.find(id);
+		if (itr != idmap.end()) {
 
 
 
 
 			std::cout << idmap[id].front().get() << "을 찾았습니다" << std::endl << std::endl;
 
+			int64_t index{ &idmap[id].front().get() - players.data() };		// 배열의 인덱스 얻기
+
 			idmap[id].front().get().Show();
 
-			auto itr = idmap.find(id);
 
 			std::cout << "<<<id 기준>>>" << std::endl << std::endl;
 
 			std::cout << "이전 값" << std::endl << std::endl;
-			std::prev(itr)->second.front().get().Show();
+			for (const Player& player : (std::prev(itr)->second)) {
+				player.Show();
+				std::cout << std::endl;
+			}
 			std::cout << "이후 값" << std::endl << std::endl;
-			std::next(itr)->second.front().get().Show();
+			if ((*itr).second.size() > 1) {
+				int i = 0;
+				for (int i = 1; i < idmap[id].size(); ++i) {
+					idmap[id][i].get().Show();
+					std::cout << std::endl;
+				}
+			}
+			else {
+				for (const Player& player : (std::next(itr)->second)) {
+					player.Show();
+					std::cout << std::endl;
+				}
+			}
 
-			int64_t index{ &idmap[id].front().get() - players.data() };		// 배열의 인덱스 얻기
+
 
 
 
@@ -321,7 +326,6 @@ void Answer5()
 
 			// players_score에서 몇번째인가
 
-			scoreMap[players[index].getScore()];
 
 			itr = scoreMap.find(players[index].getScore());
 
@@ -329,18 +333,18 @@ void Answer5()
 			std::cout << "<<<Score 기준>>>" << std::endl << std::endl;
 
 			std::cout << "이전 값" << std::endl << std::endl;
-			(--itr)->second.front().get().Show();
-			//std::prev(itr)->second.front().get().Show();
+			std::prev(itr)->second.back().get().Show();
 			std::cout << "이후 값" << std::endl << std::endl;
-			(++++itr)->second.front().get().Show();
-			//std::next(itr)->second.front().get().Show();
+			if (std::next(itr)->second.size() > 1)
+				std::next(itr)->second[1].get().Show();
+			else
+				std::next(itr)->second.front().get().Show();
 		}
 		else {
 			std::cout << "그런 id는 없습니다" << std::endl << std::endl;
 		}
 
 
-		std::cin.clear();
 	}
 }
 
@@ -357,7 +361,6 @@ int main() {
 	std::sort(players.begin(), players.end(), [](const Player& p1, const Player& p2) {
 		return p1.getName() < p2.getName();
 		});
-	SortScore();
 	SetMap();
 	Answer5();
 	

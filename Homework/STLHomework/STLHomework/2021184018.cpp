@@ -12,9 +12,9 @@
 #include <memory>
 #include <algorithm>
 #include <numeric>
-#include <functional>
-#include <ranges>
-#include <print>
+//#include <functional>
+//#include <ranges>
+//#include <print>
 
 #define NOT_USING_MAP_FLAG 0
 
@@ -228,7 +228,6 @@ void Answer3()
 
 
 std::map<int, std::vector<std::reference_wrapper<const Player>>> idmap{};
-std::map<std::string, std::vector<std::reference_wrapper<const Player>>> nameMap{};
 std::map<int, std::vector<std::reference_wrapper<const Player>>> scoreMap{};
 
 void SetMap() 
@@ -238,7 +237,6 @@ void SetMap()
 
 	for (const Player& player : players) {
 		idmap[player.getId()].push_back(std::ref(player));
-		nameMap[player.getName()].push_back(std::ref(player));
 		scoreMap[player.getScore()].push_back(std::ref(player));
 	}
 }

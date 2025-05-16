@@ -16,7 +16,6 @@
 //#include <ranges>
 //#include <print>
 
-#define NOT_USING_MAP_FLAG 0
 
 
 class Player 
@@ -71,13 +70,14 @@ public:
 
 		if (this == &other) return;
 
-		name = std::move(other.name);
+		name = other.name;
 		score = other.score;
 		id = other.id;
 		num = other.num;
 
 		p.reset(other.p.release());
 	}
+
 
 	void write(std::ostream& os) {
 		os.write((char*)this, sizeof(Player));

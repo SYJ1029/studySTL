@@ -5,11 +5,14 @@
 // 2025. 4 . 10 - 복사생성/복사할당연산자, 스페셜 함수의 동작 관찰
 // 2025. 4 . 14 - 선택적 관찰하도록 전역변수를 사용
 // 2025. 4 . 14 - 이동의미론(move semantics) 구현 
-// 2025. 5 . 1  - operator==
+// 2025. 5 . 1	- operator==
+// 2025. 5 . 15	- std::string처럼 사전식 정렬하도록 수정
+// 2025. 5 . 15	- begin(), end()
 //-------------------------------------------------------------------------
 
 #include <memory>	// 상관 없음 중복 실행 안함
 #include <print>
+#include <algorithm>
 #include "STRING.h"
 
 size_t STRING::gid{ 0 };				// 2025. 4. 10 고유번호 생성
@@ -122,6 +125,16 @@ size_t STRING::size() const
 	return num;
 }
 
+char* STRING::begin() const
+{
+	return &p[0];			// return p.get();
+}
+
+char* STRING::end() const
+{
+	return &p[num];	
+}
+
 std::ostream& operator<<(std::ostream& os, const STRING& s)
 {
 
@@ -146,9 +159,10 @@ std::istream& operator>>(std::istream& is, STRING& s)
 }
 
 // 기본정렬을 위한 <		2025. 4. 14
+// 사전식으로 정렬			2025. 5 .15
 bool STRING::operator<(const STRING& rhs) const
 {
-	return size() < rhs.size();
+	return std::lexicographical_compare(p.get(), p.get() + num, &rhs.p[0], &rhs.p[num]);
 }
 
 

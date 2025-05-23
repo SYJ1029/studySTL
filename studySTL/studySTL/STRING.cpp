@@ -8,6 +8,7 @@
 // 2025. 5 . 1	- operator==
 // 2025. 5 . 15	- std::string처럼 사전식 정렬하도록 수정
 // 2025. 5 . 15	- begin(), end()
+// 2025. 5 . 19 - rbegin(), rend()
 //-------------------------------------------------------------------------
 
 #include <memory>	// 상관 없음 중복 실행 안함
@@ -125,15 +126,26 @@ size_t STRING::size() const
 	return num;
 }
 
-char* STRING::begin() const
+STRING_Iterator STRING::begin() const
 {
-	return &p[0];			// return p.get();
+	return STRING_Iterator(&p[0]);			// return p.get();
 }
 
-char* STRING::end() const
+STRING_Iterator STRING::end() const
 {
-	return &p[num];	
+	return STRING_Iterator(&p[num]);
 }
+
+STRING_Reverse_Iterator STRING::rbegin() const
+{
+	return STRING_Reverse_Iterator(&p[num]);
+}
+STRING_Reverse_Iterator STRING::rend() const
+{
+
+	return STRING_Reverse_Iterator(&p[0]);
+}
+
 
 std::ostream& operator<<(std::ostream& os, const STRING& s)
 {
@@ -171,3 +183,4 @@ bool STRING::operator==(const STRING& rhs) const
 {
 	return std::equal(p.get(), p.get() + num, &rhs.p[0], &rhs.p[num]);
 }
+

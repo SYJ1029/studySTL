@@ -8,6 +8,8 @@
 // 2025. 5 . 19 - rbegin(), rend() 제공	-> class 여야 함
 // 2025. 5 . 22	- 반복자가 대답할 질문에 답하도록 한다.
 // 2025. 5 . 22	- begin(), end()가 반복자를 리턴하도록 한다.
+// 2025. 5 . 26	- sort가 가능하도록 필요한 연산자를 모두 코딩
+//				(C++의 연산자 오버로딩을 모두 이해해야만 가능하다)
 //-------------------------------------------------------------------------
 #pragma once
 
@@ -27,45 +29,69 @@ public:
 	using iterator_category = std::random_access_iterator_tag;
 
 public:
-	STRING_Iterator() {};
+	STRING_Iterator() = default;
 	STRING_Iterator(char* p) : p{ p } {};
 	// 반복자라면 제공해야할 기본동작이 있다
 
-	// 이건 의미를 제대로 코딩해야 한다
-	void operator++() {
+	// 2025. 5. 26 ++연산자 구현
+	STRING_Iterator& operator++() {
 		++p;
+		return *this;
 	}
 
-	char operator*() const {
+	//2025. 5. 26
+	//이 연산의 결과는 l-value가 아님 -> &를 리턴하고 const를 제거
+	char& operator*() {
 		return *p;
 	}
 
+	// cv-qualifier는 오버로딩으로 구분가능하다
+	char& operator*() const {
+		return *p;
+	}
+
+	//<=> 작성 후 주석처리
+	// 뭔가 안되서 다시 살림
 	bool operator==(const STRING_Iterator& rhs) const {
 		return p == rhs.p;
 	}
 
 	//sort가 동작하도록 필요 연산자 추가
+	// 2025. 5. 26
 	difference_type operator-(const STRING_Iterator& rhs) const {
-		return p - rhs.p;
+		return (p - rhs.p);
 	}
 
-	//difference_type operator+(const STRING_Iterator& rhs) const {
-	//	return p + rhs.p;
+	STRING_Iterator operator-(difference_type n) const {
+		return p - n;
+	}
+
+	STRING_Iterator& operator--() {
+		--p;
+		return *this;
+	}
+
+
+	//reference operator=(const STRING_Iterator& rhs) {
+	//	p = rhs.p;
+	//	return *p;
 	//}
 
-	reference operator=(const STRING_Iterator& rhs) {
-		p = rhs.p;
-		return *p;
+
+	//모든 relational operation을 할 수 있게 <=>을 정의
+	// <, <=, ==, !=, >=, >
+
+	auto operator<=>(const STRING_Iterator& rhs) const {
+		return p <=> rhs.p;
 	}
 
-	pointer operator--() {
-		return --p;
+	STRING_Iterator operator+(difference_type n) const {
+		return p + n;
 	}
-
 
 
 private:
-	char* p;
+	char* p{};
 };
 
 

@@ -143,6 +143,9 @@
     <ClInclude Include="save.h" />
     <ClInclude Include="STRING.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="이상한 나라의 앨리스.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

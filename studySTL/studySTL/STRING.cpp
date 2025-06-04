@@ -174,7 +174,7 @@ std::istream& operator>>(std::istream& is, STRING& s)
 // 사전식으로 정렬			2025. 5 .15
 bool STRING::operator<(const STRING& rhs) const
 {
-	return std::lexicographical_compare(p.get(), p.get() + num, &rhs.p[0], &rhs.p[num]);
+	return std::lexicographical_compare(p.get(), p.get() + num, rhs.p.get(), rhs.p.get() + rhs.num);
 }
 
 

@@ -178,6 +178,7 @@ bool STRING::operator<(const STRING& rhs) const
 }
 
 
+
 // 같은 객체인지 비교 ==		2025. 5. 1
 bool STRING::operator==(const STRING& rhs) const
 {

@@ -52,9 +52,9 @@ public:
 
 	//<=> 작성 후 주석처리
 	// 뭔가 안되서 다시 살림
-	bool operator==(const STRING_Iterator& rhs) const {
-		return p == rhs.p;
-	}
+	//bool operator==(const STRING_Iterator& rhs) const {
+	//	return p == rhs.p;
+	//}
 
 	//sort가 동작하도록 필요 연산자 추가
 	// 2025. 5. 26
@@ -81,9 +81,11 @@ public:
 	//모든 relational operation을 할 수 있게 <=>을 정의
 	// <, <=, ==, !=, >=, >
 
-	auto operator<=>(const STRING_Iterator& rhs) const {
-		return p <=> rhs.p;
-	}
+	//auto operator<=>(const STRING_Iterator& rhs) const {
+	//	return p <=> rhs.p;
+	//}
+
+	auto operator<=>(const STRING_Iterator& rhs) const = default;
 
 	STRING_Iterator operator+(difference_type n) const {
 		return p + n;
@@ -147,6 +149,9 @@ public:
 	bool operator<(const STRING&) const;
 	// 같은 객체인지 비교 ==		2025. 5. 1
 	bool operator==(const STRING&) const;
+
+	void write(std::ostream& os);
+	bool read(std::istream& is);
 
 
 	size_t size() const;

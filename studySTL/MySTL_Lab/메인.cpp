@@ -1,40 +1,74 @@
-/*--------------------------------
-// 2025학년도 1학기 STL 월910수910				(7주 2일)
-// 4월 10일 목요일
-// 중간고사		- 8주 1일(4월 24일 목요일)
----------------------------------*/
-
-
-/*----------------------------------------------------------------
-// STL Container - Containers are objects that store other objects
-// array -
-// vector - at 예제는 하고 가자
-------------------------------------------------------------------*/
-
 #include <iostream>
-#include <memory>
+#include <iterator>
+#include <array>
+#include <forward_list>
+#include <list>
+#include <deque>
+#include <vector>
+#include <concepts>
+#include <chrono>
+#include <algorithm>
 #include "save.h"
 #include "STRING.h"
+using namespace std;
+extern bool 관찰;
 
 
-extern bool 관찰;				// 관찰하려면 true로
+// 반복자는 서로 다르다 - 6개의 categoty
 
-//[문제] 키보드에서 단어를 모두 입력받아 오름차순으로 정렬한 후 출력하라.
+// [문제] 반복자를 인자로 받아 어떤 종류의 반복자인지 화면에 출력하는 
+// 함수 f를 정의하라
 
-void 실험() {
-	using namespace std;
 
-	unique_ptr<int> p;
+template <class 반복자>
 
-	while(1) {
-		p = make_unique<int>(1557);
+void f(const 반복자& p)
+{
+
+
+	if constexpr (contiguous_iterator<반복자>)
+		cout << typeid(반복자::iterator_concept).name() << endl;
+	else
+	{
+		cout << typeid(iterator_traits<반복자>::iterator_category).name() << endl;
+
 	}
+
+
+
 }
 
-//----------------
+
+
+//---------
 int main()
-//----------------
+//---------
 {
-	실험();
-	//save("메인.cpp");
+
+	f(ostream_iterator<char>{cout});
+
+	f(istream_iterator<char>{cin});
+
+	f(forward_list<char>{}.begin());
+
+	deque<std::string> d;
+	f(d.rbegin());
+
+	list<int> l;
+	f(l.begin());
+
+	f(vector<int>{}.cbegin());
+
+
+
+
+	f(array<int, 10>{}.begin());
+
+	int* p;
+	f(p);
+
+
+
+
+	save("메인.cpp");
 }
